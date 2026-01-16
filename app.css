@@ -86,8 +86,8 @@ body {
 }
 
 .btn-icon svg {
-	width: 18px;
-	height: 18px;
+	width: 14px;
+	height: 14px;
 }
 
 /* Scheduler Section */
@@ -113,8 +113,8 @@ body {
 .toggle-switch {
 	position: relative;
 	display: inline-block;
-	width: 48px;
-	height: 24px;
+	width: 46px;
+	height: 22px;
 }
 
 .toggle-switch input {
@@ -132,14 +132,14 @@ body {
 	bottom: 0;
 	background-color: #ccc;
 	transition: 0.3s;
-	border-radius: 24px;
+	border-radius: 22px;
 }
 
 .toggle-slider:before {
 	position: absolute;
 	content: "";
-	height: 18px;
-	width: 18px;
+	height: 16px;
+	width: 16px;
 	left: 3px;
 	bottom: 3px;
 	background-color: #fff;
@@ -152,7 +152,7 @@ input:checked + .toggle-slider {
 }
 
 input:checked + .toggle-slider:before {
-	transform: translateX(24px);
+	transform: translateX(22px);
 }
 
 /* Scheduler Options */
