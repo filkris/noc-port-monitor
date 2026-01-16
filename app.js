@@ -188,14 +188,25 @@ function renderPorts(ports) {
 function renderEvent(event) {
 	const eventClass = event.state === 'UP' ? 'up' : 'down';
 	const stateText = event.state === 'UP' ? '[UP]' : '[DOWN]';
-	const timestamp = event.date
-		? event.date.replace('T', ' ').substring(0, 19)
+	const timestamp = event.timestamp
+		? formatDate(new Date(event.timestamp))
 		: 'Unknown time';
 
 	return elements.eventTemplate
 		.replace('{{eventClass}}', eventClass)
 		.replace('{{state}}', stateText)
 		.replace('{{timestamp}}', timestamp);
+}
+
+function formatDate(date) {
+	const pad = n => n.toString().padStart(2, '0');
+	const day = pad(date.getDate());
+	const month = pad(date.getMonth() + 1);
+	const year = date.getFullYear();
+	const hours = pad(date.getHours());
+	const minutes = pad(date.getMinutes());
+	const seconds = pad(date.getSeconds());
+	return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
 }
 
 async function handleSchedulerToggle(e) {
