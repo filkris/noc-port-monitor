@@ -20,7 +20,8 @@ export const parseLogDate = (dateStr) => {
 	const match = dateStr.match(LOG_DATE_REGEX);
 	if (!match) return null;
 
-	const parsed = new Date(match[1]);
+	// Append UTC to parse as UTC time (logs are in UTC)
+	const parsed = new Date(match[1] + ' UTC');
 	return isNaN(parsed.getTime()) ? null : parsed.getTime();
 };
 
