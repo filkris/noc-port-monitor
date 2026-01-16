@@ -120,4 +120,5 @@ Clears all storage and reinitializes extension.
 
 ## Version
 
+- **v1.1.0** - Added countdown timer for next scheduled scan, fixed log timestamp UTC parsing
 - **v1.0.0** - Complete rewrite with scheduler, accordion UI, background service worker

@@ -217,10 +217,25 @@ input:checked + .toggle-slider:before {
 	cursor: not-allowed;
 }
 
+.scan-info {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
 .last-scan {
 	font-size: 11px;
 	color: #888;
-	text-align: right;
+}
+
+.countdown {
+	font-size: 11px;
+	color: #b10d28;
+	font-weight: 500;
+}
+
+.countdown.hidden {
+	display: none;
 }
 
 /* Status Section */

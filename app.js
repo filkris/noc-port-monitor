@@ -1,5 +1,7 @@
 // popup.js - Popup UI Controller
 
+import * as countdown from './countdown.js';
+
 const elements = {};
 let state = {};
 
@@ -23,6 +25,7 @@ function cacheElements() {
 	elements.scanBtn = document.getElementById('scanBtn');
 	elements.rebootBtn = document.getElementById('rebootBtn');
 	elements.lastScan = document.getElementById('lastScan');
+	elements.countdown = document.getElementById('countdown');
 	elements.statusBar = document.getElementById('statusBar');
 	elements.routerAccordion = document.getElementById('routerAccordion');
 
@@ -96,6 +99,13 @@ function renderMainContent() {
 		elements.lastScan.textContent = `Last scan: ${date.toLocaleString()}`;
 	} else {
 		elements.lastScan.textContent = '';
+	}
+
+	// Render countdown
+	if (state.schedulerEnabled && state.lastScan) {
+		countdown.start(elements.countdown, state.lastScan, state.schedulerFrequency);
+	} else {
+		countdown.stop();
 	}
 
 	// Render accordion
