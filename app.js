@@ -150,9 +150,13 @@ function renderRouterItem(router, data) {
 	let affectedPorts = 0;
 	let portContent = '<div class="no-data">No data yet</div>';
 
-	if (data) {
+	if (data && data.ports && Object.keys(data.ports).length > 0) {
 		affectedPorts = data.affectedPorts || 0;
-		indicatorClass = data.hasIssues ? 'red' : 'green';
+		// Check if any port's last event is DOWN
+		const hasDownPort = Object.values(data.ports).some(events =>
+			events.length > 0 && events[0].state === 'DOWN'
+		);
+		indicatorClass = hasDownPort ? 'red' : 'green';
 
 		if (data.ports && Object.keys(data.ports).length > 0) {
 			portContent = renderPorts(data.ports);
