@@ -26,12 +26,15 @@ html.resizable body {
 #mainContent {
 	display: flex;
 	flex-direction: column;
+	height: 100%;
 }
 
 html.resizable #mainContent {
+	height: auto;
 	min-height: 300px;
+	max-height: 800px;
 	resize: vertical;
-	overflow: auto;
+	overflow: hidden;
 }
 
 .hidden {
@@ -280,6 +283,9 @@ input:checked + .toggle-slider:before {
 /* Routers Section */
 .routers-section {
 	padding: 8px;
+	flex: 1;
+	overflow-y: auto;
+	min-height: 0;
 }
 
 /* Accordion */
@@ -415,8 +421,6 @@ input:checked + .toggle-slider:before {
 .accordion-body {
 	display: none;
 	padding: 12px;
-	max-height: 300px;
-	overflow-y: auto;
 	background: #fafafa;
 }
 
