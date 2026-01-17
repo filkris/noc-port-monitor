@@ -361,10 +361,12 @@ function handleAccordionClick(e) {
 	item.classList.toggle('open');
 }
 
-async function markRouterSeen(routerId) {
+function markRouterSeen(routerId) {
 	if (state.routerData?.[routerId]) {
+		// Update local state immediately to prevent badge reappearing on re-render
 		state.routerData[routerId].lastSeenState = getCurrentPortStates(routerId);
-		await chrome.runtime.sendMessage({
+		// Persist to storage asynchronously (don't await)
+		chrome.runtime.sendMessage({
 			action: 'updateRouterSeen',
 			routerId,
 			lastSeenState: state.routerData[routerId].lastSeenState
