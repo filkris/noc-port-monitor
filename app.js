@@ -382,8 +382,11 @@ let resizeEnabled = false;
 
 function handleResizeToggle() {
 	resizeEnabled = !resizeEnabled;
-	document.body.classList.toggle('resizable', resizeEnabled);
+	document.documentElement.classList.toggle('resizable', resizeEnabled);
 	elements.resizeBtn.classList.toggle('active', resizeEnabled);
+	if (!resizeEnabled) {
+		document.body.style.height = '';
+	}
 }
 
 let activeStatus = null;
