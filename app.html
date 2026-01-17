@@ -44,10 +44,13 @@
 		<section class="scheduler-section">
 			<div class="scheduler-header">
 				<span class="section-title">Scheduler</span>
-				<label class="toggle-switch">
-					<input type="checkbox" id="schedulerToggle">
-					<span class="toggle-slider"></span>
-				</label>
+				<div class="scheduler-right">
+					<span id="countdown" class="countdown hidden"></span>
+					<label class="toggle-switch">
+						<input type="checkbox" id="schedulerToggle">
+						<span class="toggle-slider"></span>
+					</label>
+				</div>
 			</div>
 			<div class="scheduler-options">
 				<select id="frequencySelect" class="frequency-select">
@@ -57,6 +60,13 @@
 					<option value="6h">Every 6 hours</option>
 				</select>
 			</div>
+		</section>
+
+		<!-- Manual Section -->
+		<section class="manual-section">
+			<div class="manual-header">
+				<span class="section-title">Manual</span>
+			</div>
 			<div class="scan-controls">
 				<div class="scan-row">
 					<select id="scanRouterSelect" class="scan-router-select">
@@ -65,15 +75,6 @@
 					<button id="scanBtn" class="btn btn-primary">Scan</button>
 				</div>
 			</div>
-			<div class="scan-info">
-				<span id="lastScan" class="last-scan"></span>
-				<span id="countdown" class="countdown hidden"></span>
-			</div>
-		</section>
-
-		<!-- Status Section -->
-		<section class="status-section">
-			<div id="statusBar" class="status-bar"></div>
 		</section>
 
 		<!-- Router Accordion -->
