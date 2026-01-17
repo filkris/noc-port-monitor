@@ -24,7 +24,6 @@ function cacheElements() {
 	elements.scanRouterSelect = document.getElementById('scanRouterSelect');
 	elements.scanBtn = document.getElementById('scanBtn');
 	elements.rebootBtn = document.getElementById('rebootBtn');
-	elements.resizeBtn = document.getElementById('resizeBtn');
 	elements.countdown = document.getElementById('countdown');
 	elements.statusBar = document.getElementById('statusBar');
 	elements.routerAccordion = document.getElementById('routerAccordion');
@@ -40,7 +39,6 @@ function bindEvents() {
 	elements.frequencySelect.addEventListener('change', handleFrequencyChange);
 	elements.scanBtn.addEventListener('click', handleScan);
 	elements.rebootBtn.addEventListener('click', handleReboot);
-	elements.resizeBtn.addEventListener('click', handleResizeToggle);
 	elements.routerAccordion.addEventListener('click', handleAccordionClick);
 }
 
@@ -392,17 +390,6 @@ function hasNewChanges(routerId) {
 		if (data.lastSeenState[port] !== state) return true;
 	}
 	return false;
-}
-
-let resizeEnabled = false;
-
-function handleResizeToggle() {
-	resizeEnabled = !resizeEnabled;
-	document.documentElement.classList.toggle('resizable', resizeEnabled);
-	elements.resizeBtn.classList.toggle('active', resizeEnabled);
-	if (!resizeEnabled) {
-		elements.mainContent.style.height = '';
-	}
 }
 
 let activeStatus = null;

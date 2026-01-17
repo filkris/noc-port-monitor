@@ -6,7 +6,7 @@
 
 html, body {
 	width: 400px;
-	height: 600px;
+	height: 800px;
 	overflow: hidden;
 }
 
@@ -17,24 +17,10 @@ body {
 	color: #333;
 }
 
-html.resizable,
-html.resizable body {
-	height: auto;
-	min-height: 500px;
-}
-
 #mainContent {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
-	overflow: hidden;
-}
-
-html.resizable #mainContent {
-	height: auto;
-	min-height: 500px;
-	max-height: 1000px;
-	resize: vertical;
 	overflow: hidden;
 }
 
