@@ -133,18 +133,25 @@ function renderRouterSelect() {
 
 function renderAccordion() {
 	const accordion = elements.routerAccordion;
+
+	// Preserve open state
+	const openRouterIds = new Set(
+		Array.from(accordion.querySelectorAll('.accordion-item.open'))
+			.map(item => item.dataset.routerId)
+	);
+
 	accordion.innerHTML = '';
 
 	if (!state.routers) return;
 
 	for (const router of state.routers) {
 		const routerData = state.routerData?.[router.id];
-		const html = renderRouterItem(router, routerData);
+		const html = renderRouterItem(router, routerData, openRouterIds.has(router.id));
 		accordion.insertAdjacentHTML('beforeend', html);
 	}
 }
 
-function renderRouterItem(router, data) {
+function renderRouterItem(router, data, isOpen = false) {
 	let indicatorClass = 'gray';
 	let affectedPorts = 0;
 	let portContent = '<div class="no-data">No data yet</div>';
@@ -165,6 +172,7 @@ function renderRouterItem(router, data) {
 	const newBadge = hasNewChanges(router.id) ? '<span class="badge-new">new</span>' : '';
 
 	return elements.routerItemTemplate
+		.replace('{{openClass}}', isOpen ? 'open' : '')
 		.replace('{{routerId}}', router.id)
 		.replace('{{indicatorClass}}', indicatorClass)
 		.replace('{{routerName}}', router.name)
