@@ -24,6 +24,7 @@ function cacheElements() {
 	elements.scanRouterSelect = document.getElementById('scanRouterSelect');
 	elements.scanBtn = document.getElementById('scanBtn');
 	elements.rebootBtn = document.getElementById('rebootBtn');
+	elements.resizeBtn = document.getElementById('resizeBtn');
 	elements.lastScan = document.getElementById('lastScan');
 	elements.countdown = document.getElementById('countdown');
 	elements.statusBar = document.getElementById('statusBar');
@@ -40,6 +41,7 @@ function bindEvents() {
 	elements.frequencySelect.addEventListener('change', handleFrequencyChange);
 	elements.scanBtn.addEventListener('click', handleScan);
 	elements.rebootBtn.addEventListener('click', handleReboot);
+	elements.resizeBtn.addEventListener('click', handleResizeToggle);
 	elements.routerAccordion.addEventListener('click', handleAccordionClick);
 }
 
@@ -338,6 +340,14 @@ function handleAccordionClick(e) {
 
 	const item = header.closest('.accordion-item');
 	item.classList.toggle('open');
+}
+
+let resizeEnabled = false;
+
+function handleResizeToggle() {
+	resizeEnabled = !resizeEnabled;
+	document.body.classList.toggle('resizable', resizeEnabled);
+	elements.resizeBtn.classList.toggle('active', resizeEnabled);
 }
 
 function setStatus(type, message) {

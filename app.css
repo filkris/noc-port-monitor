@@ -15,6 +15,12 @@ body {
 	overflow-y: auto;
 }
 
+body.resizable {
+	max-height: none;
+	resize: vertical;
+	overflow: auto;
+}
+
 .hidden {
 	display: none !important;
 }
@@ -81,6 +87,11 @@ body {
 }
 
 .btn-icon:hover {
+	background: #b10d28;
+	color: #fff;
+}
+
+.btn-icon.active {
 	background: #b10d28;
 	color: #fff;
 }
