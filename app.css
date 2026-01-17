@@ -7,6 +7,7 @@
 html, body {
 	width: 400px;
 	height: 600px;
+	overflow: hidden;
 }
 
 body {
@@ -14,25 +15,25 @@ body {
 	font-size: 13px;
 	background: #fff;
 	color: #333;
-	overflow-y: auto;
 }
 
 html.resizable,
 html.resizable body {
 	height: auto;
-	min-height: 300px;
+	min-height: 500px;
 }
 
 #mainContent {
 	display: flex;
 	flex-direction: column;
 	height: 100%;
+	overflow: hidden;
 }
 
 html.resizable #mainContent {
 	height: auto;
-	min-height: 300px;
-	max-height: 800px;
+	min-height: 500px;
+	max-height: 1000px;
 	resize: vertical;
 	overflow: hidden;
 }
