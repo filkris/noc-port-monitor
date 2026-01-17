@@ -121,6 +121,7 @@ Clears all storage and reinitializes extension.
 
 ## Version
 
+- **v1.5.0** - Live router name in status bar during scan, accordion state preserved on updates, single-click badge removal
 - **v1.4.0** - Incremental scan progress updates, countdown on first scheduler enable, centered auth screen
 - **v1.3.0** - Separated Scheduler/Manual sections, footer status bar, "new" badge on router state changes, port display as "Port #X/Y/Z"
 - **v1.2.0** - Improved indicator logic (checks last port state), resizable popup toggle, date format DD-MM-YYYY HH:MM:SS
