@@ -63,7 +63,7 @@ parser/
 ### Router Accordion
 
 Each router shows:
-- **Header**: Status indicator, name, affected port count
+- **Header**: Status indicator, name, "new" badge, affected port count
 - **Subheader**: Vendor, network type, model, IP
 - **Body**: Port groups with chronological events
 
@@ -121,6 +121,7 @@ Clears all storage and reinitializes extension.
 
 ## Version
 
+- **v1.3.0** - Separated Scheduler/Manual sections, footer status bar, "new" badge on router state changes, port display as "Port #X/Y/Z"
 - **v1.2.0** - Improved indicator logic (checks last port state), resizable popup toggle, date format DD-MM-YYYY HH:MM:SS
 - **v1.1.0** - Added countdown timer for next scheduled scan, fixed log timestamp UTC parsing
 - **v1.0.0** - Complete rewrite with scheduler, accordion UI, background service worker
