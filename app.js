@@ -345,16 +345,16 @@ async function handleReboot() {
 }
 
 function handleAccordionClick(e) {
-	const badge = e.target.closest('.badge-new');
 	const header = e.target.closest('.accordion-header');
 	if (!header) return;
 
 	const item = header.closest('.accordion-item');
+	const routerId = item.dataset.routerId;
 
-	// If clicking on badge, remove it and mark seen, but still open
+	// Remove badge and mark seen when clicking anywhere on header
+	const badge = item.querySelector('.badge-new');
 	if (badge) {
 		badge.remove();
-		const routerId = item.dataset.routerId;
 		markRouterSeen(routerId);
 	}
 
@@ -441,6 +441,10 @@ chrome.storage.onChanged.addListener((changes, area) => {
 				renderFooterStatus();
 			}
 		}
-		loadState().then(render);
+		// Skip re-render if only routerData changed (from our own updateRouterSeen)
+		const isOnlyRouterDataChange = Object.keys(changes).length === 1 && changes.routerData;
+		if (!isOnlyRouterDataChange) {
+			loadState().then(render);
+		}
 	}
 });
