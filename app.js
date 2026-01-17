@@ -430,6 +430,15 @@ function clearStatusAfterDelay(delay = 3000) {
 // Listen for storage changes to update UI
 chrome.storage.onChanged.addListener((changes, area) => {
 	if (area === 'local') {
+		// Update scanning status in footer
+		if (changes.scanningRouter) {
+			if (changes.scanningRouter.newValue) {
+				setStatus('loading', `Scanning ${changes.scanningRouter.newValue}...`);
+			} else {
+				activeStatus = null;
+				renderFooterStatus();
+			}
+		}
 		loadState().then(render);
 	}
 });

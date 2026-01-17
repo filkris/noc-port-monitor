@@ -171,6 +171,9 @@ async function scanAllRouters() {
 	routerData = routerData || {};
 
 	for (const router of ROUTERS) {
+		// Update scanning status
+		await chrome.storage.local.set({ scanningRouter: router.name });
+
 		try {
 			const result = await fetchRouterLogs(router, sessionId);
 			// Preserve lastSeenState from previous data
@@ -188,6 +191,9 @@ async function scanAllRouters() {
 			[STORAGE_KEYS.LAST_SCAN]: Date.now()
 		});
 	}
+
+	// Clear scanning status
+	await chrome.storage.local.remove('scanningRouter');
 
 	return { success: true, results: routerData };
 }
