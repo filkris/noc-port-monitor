@@ -399,7 +399,7 @@ function handleResizeToggle() {
 	document.documentElement.classList.toggle('resizable', resizeEnabled);
 	elements.resizeBtn.classList.toggle('active', resizeEnabled);
 	if (!resizeEnabled) {
-		document.body.style.height = '';
+		elements.mainContent.style.height = '';
 	}
 }
 
