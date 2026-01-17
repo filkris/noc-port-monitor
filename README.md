@@ -8,7 +8,8 @@ Chrome MV3 extension for monitoring router port status changes from NOC Portal.
 - **Manual Scan**: Scan all routers or individual router on demand
 - **Port Status Tracking**: Detects UP/DOWN events with timestamps
 - **Router Accordion**: Expandable list showing affected ports per router
-- **Status Indicators**: Green (no issues), Red (issues detected), Gray (no data)
+- **Status Indicators**: Green (all ports UP), Red (any port DOWN), Gray (no data)
+- **Resizable Popup**: Toggle to enable vertical resizing of popup window
 - **Persistent Background**: Runs while NOC Portal tab is open
 - **Auto Session Detection**: Detects login state and session from NOC Portal
 
@@ -120,5 +121,6 @@ Clears all storage and reinitializes extension.
 
 ## Version
 
+- **v1.2.0** - Improved indicator logic (checks last port state), resizable popup toggle, date format DD-MM-YYYY HH:MM:SS
 - **v1.1.0** - Added countdown timer for next scheduled scan, fixed log timestamp UTC parsing
 - **v1.0.0** - Complete rewrite with scheduler, accordion UI, background service worker
