@@ -143,7 +143,7 @@ Three-step wizard process for fetching router logs:
 
 ## Version History
 
-- **v1.6.1** - Removed resizable popup, fixed popup height to 800px
+- **v1.6.1** - Removed resizable popup, fixed popup height to 600px
 - **v1.6.0** - Modular architecture refactor, code organized into modules/ directory
 - **v1.5.0** - Live router name in status bar during scan, accordion state preserved on updates, single-click badge removal
 - **v1.4.0** - Incremental scan progress updates, countdown on first scheduler enable, centered auth screen
