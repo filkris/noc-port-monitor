@@ -76,6 +76,9 @@ async function handleMessage(message, sender) {
 		case 'authStateChanged':
 			return handleAuthStateChanged(message.isLoggedIn);
 
+		case 'updateRouterSeen':
+			return updateRouterSeen(message.routerId, message.lastSeenState);
+
 		default:
 			return { error: 'Unknown action' };
 	}
@@ -394,6 +397,15 @@ function parseLogLine(line) {
 		date: timestamp ? new Date(timestamp).toISOString() : null,
 		raw: line
 	};
+}
+
+async function updateRouterSeen(routerId, lastSeenState) {
+	const { [STORAGE_KEYS.ROUTER_DATA]: routerData } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
+	if (routerData?.[routerId]) {
+		routerData[routerId].lastSeenState = lastSeenState;
+		await chrome.storage.local.set({ [STORAGE_KEYS.ROUTER_DATA]: routerData });
+	}
+	return { success: true };
 }
 
 async function rebootExtension() {

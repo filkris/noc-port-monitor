@@ -347,9 +347,14 @@ function handleAccordionClick(e) {
 	}
 }
 
-function markRouterSeen(routerId) {
+async function markRouterSeen(routerId) {
 	if (state.routerData?.[routerId]) {
 		state.routerData[routerId].lastSeenState = getCurrentPortStates(routerId);
+		await chrome.runtime.sendMessage({
+			action: 'updateRouterSeen',
+			routerId,
+			lastSeenState: state.routerData[routerId].lastSeenState
+		});
 	}
 }
 
