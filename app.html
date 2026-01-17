@@ -81,6 +81,11 @@
 		<section class="routers-section">
 			<div id="routerAccordion" class="accordion"></div>
 		</section>
+
+		<!-- Footer -->
+		<footer class="footer">
+			<span id="statusBar" class="status-text"></span>
+		</footer>
 	</div>
 
 	<!-- Templates -->
@@ -92,6 +97,7 @@
 					<span class="router-name">{{routerName}}</span>
 				</div>
 				<div class="header-right">
+					{{newBadge}}
 					<span class="affected-ports">{{affectedPorts}} ports</span>
 					<span class="chevron"><svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m6 9 6 6 6-6"/></svg></span>
 				</div>
@@ -110,7 +116,7 @@
 
 	<script type="text/template" id="portGroupTemplate">
 		<div class="port-group">
-			<div class="port-header">Port {{portId}}</div>
+			<div class="port-header">Port #{{portId}}</div>
 			<div class="port-events">
 				{{events}}
 			</div>

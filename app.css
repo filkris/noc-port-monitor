@@ -166,10 +166,24 @@ input:checked + .toggle-slider:before {
 	transform: translateX(22px);
 }
 
-/* Scheduler Options */
-.scheduler-options {
+.scheduler-right {
+	display: flex;
+	align-items: center;
+	gap: 12px;
+}
+
+/* Manual Section */
+.manual-section {
+	padding: 12px 16px;
+	background: #fff;
+	border-bottom: 1px solid #e0e0e0;
+}
+
+.manual-header {
 	margin-bottom: 12px;
 }
+
+/* Scheduler Options */
 
 .frequency-select,
 .scan-router-select {
@@ -191,9 +205,6 @@ input:checked + .toggle-slider:before {
 }
 
 /* Scan Controls */
-.scan-controls {
-	margin-bottom: 8px;
-}
 
 .scan-row {
 	display: flex;
@@ -228,17 +239,6 @@ input:checked + .toggle-slider:before {
 	cursor: not-allowed;
 }
 
-.scan-info {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
-.last-scan {
-	font-size: 11px;
-	color: #888;
-}
-
 .countdown {
 	font-size: 11px;
 	color: #b10d28;
@@ -249,38 +249,19 @@ input:checked + .toggle-slider:before {
 	display: none;
 }
 
-/* Status Section */
-.status-section {
+/* Footer */
+.footer {
+	position: sticky;
+	bottom: 0;
+	background: #fff;
+	border-top: 1px solid #e0e0e0;
 	padding: 8px 16px;
-}
-
-.status-bar {
-	padding: 8px 12px;
-	border-radius: 6px;
-	font-size: 12px;
 	text-align: center;
 }
 
-.status-bar.loading {
-	background: #f0f0f0;
-	color: #666;
-	border: 1px solid #ddd;
-}
-
-.status-bar.success {
-	background: #e8f5e9;
-	color: #2e7d32;
-	border: 1px solid #a5d6a7;
-}
-
-.status-bar.error {
-	background: #ffebee;
-	color: #c00000;
-	border: 1px solid #ef9a9a;
-}
-
-.status-bar:empty {
-	display: none;
+.status-text {
+	font-size: 11px;
+	color: #888;
 }
 
 /* Routers Section */
@@ -355,6 +336,16 @@ input:checked + .toggle-slider:before {
 .affected-ports {
 	font-size: 11px;
 	color: #888;
+}
+
+.badge-new {
+	font-size: 9px;
+	font-weight: 600;
+	text-transform: uppercase;
+	background: #b10d28;
+	color: #fff;
+	padding: 2px 5px;
+	border-radius: 3px;
 }
 
 .chevron {

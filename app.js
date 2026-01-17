@@ -25,7 +25,6 @@ function cacheElements() {
 	elements.scanBtn = document.getElementById('scanBtn');
 	elements.rebootBtn = document.getElementById('rebootBtn');
 	elements.resizeBtn = document.getElementById('resizeBtn');
-	elements.lastScan = document.getElementById('lastScan');
 	elements.countdown = document.getElementById('countdown');
 	elements.statusBar = document.getElementById('statusBar');
 	elements.routerAccordion = document.getElementById('routerAccordion');
@@ -95,13 +94,8 @@ function renderMainContent() {
 	// Render router select
 	renderRouterSelect();
 
-	// Render last scan
-	if (state.lastScan) {
-		const date = new Date(state.lastScan);
-		elements.lastScan.textContent = `Last scan: ${date.toLocaleString()}`;
-	} else {
-		elements.lastScan.textContent = '';
-	}
+	// Render footer status
+	renderFooterStatus();
 
 	// Render countdown
 	if (state.schedulerEnabled && state.lastScan) {
@@ -165,10 +159,13 @@ function renderRouterItem(router, data) {
 		}
 	}
 
+	const newBadge = hasNewChanges(router.id) ? '<span class="badge-new">new</span>' : '';
+
 	return elements.routerItemTemplate
 		.replace('{{routerId}}', router.id)
 		.replace('{{indicatorClass}}', indicatorClass)
 		.replace('{{routerName}}', router.name)
+		.replace('{{newBadge}}', newBadge)
 		.replace('{{affectedPorts}}', affectedPorts)
 		.replace('{{vendor}}', router.vendor)
 		.replace('{{type}}', router.type)
@@ -340,6 +337,40 @@ function handleAccordionClick(e) {
 
 	const item = header.closest('.accordion-item');
 	item.classList.toggle('open');
+
+	// Remove new badge when opened
+	const badge = item.querySelector('.badge-new');
+	if (badge) {
+		badge.remove();
+		const routerId = item.dataset.routerId;
+		markRouterSeen(routerId);
+	}
+}
+
+function markRouterSeen(routerId) {
+	if (state.routerData?.[routerId]) {
+		state.routerData[routerId].lastSeenState = getCurrentPortStates(routerId);
+	}
+}
+
+function getCurrentPortStates(routerId) {
+	const data = state.routerData?.[routerId];
+	if (!data?.ports) return {};
+	const states = {};
+	for (const [port, events] of Object.entries(data.ports)) {
+		if (events.length > 0) states[port] = events[0].state;
+	}
+	return states;
+}
+
+function hasNewChanges(routerId) {
+	const data = state.routerData?.[routerId];
+	if (!data?.ports || !data.lastSeenState) return Object.keys(data?.ports || {}).length > 0;
+	const current = getCurrentPortStates(routerId);
+	for (const [port, state] of Object.entries(current)) {
+		if (data.lastSeenState[port] !== state) return true;
+	}
+	return false;
 }
 
 let resizeEnabled = false;
@@ -350,15 +381,27 @@ function handleResizeToggle() {
 	elements.resizeBtn.classList.toggle('active', resizeEnabled);
 }
 
+let activeStatus = null;
+
+function renderFooterStatus() {
+	if (activeStatus) return;
+	if (state.lastScan) {
+		const date = new Date(state.lastScan);
+		elements.statusBar.textContent = `Last scan: ${formatDate(date)}`;
+	} else {
+		elements.statusBar.textContent = '';
+	}
+}
+
 function setStatus(type, message) {
-	elements.statusBar.className = `status-bar ${type}`;
+	activeStatus = { type, message };
 	elements.statusBar.textContent = message;
 }
 
 function clearStatusAfterDelay(delay = 3000) {
 	setTimeout(() => {
-		elements.statusBar.className = 'status-bar';
-		elements.statusBar.textContent = '';
+		activeStatus = null;
+		renderFooterStatus();
 	}, delay);
 }
 
