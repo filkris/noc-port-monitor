@@ -167,23 +167,29 @@ async function scanAllRouters() {
 		return { error: 'No session - open NOC Portal first' };
 	}
 
-	const results = {};
+	let { [STORAGE_KEYS.ROUTER_DATA]: routerData } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
+	routerData = routerData || {};
 
 	for (const router of ROUTERS) {
 		try {
 			const result = await fetchRouterLogs(router, sessionId);
-			results[router.id] = result;
+			// Preserve lastSeenState from previous data
+			if (routerData[router.id]?.lastSeenState) {
+				result.lastSeenState = routerData[router.id].lastSeenState;
+			}
+			routerData[router.id] = result;
 		} catch (error) {
-			results[router.id] = { error: error.message };
+			routerData[router.id] = { error: error.message };
 		}
+
+		// Update storage after each router
+		await chrome.storage.local.set({
+			[STORAGE_KEYS.ROUTER_DATA]: routerData,
+			[STORAGE_KEYS.LAST_SCAN]: Date.now()
+		});
 	}
 
-	await chrome.storage.local.set({
-		[STORAGE_KEYS.ROUTER_DATA]: results,
-		[STORAGE_KEYS.LAST_SCAN]: Date.now()
-	});
-
-	return { success: true, results };
+	return { success: true, results: routerData };
 }
 
 async function scanSingleRouter(routerId) {
