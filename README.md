@@ -109,7 +109,7 @@ Clears all storage and reinitializes extension.
 30 preconfigured routers in `config.js`:
 - 2 TRANSIT (N-PE)
 - 27 MAN (U-PE)
-- 1 MOB
+- 2 MOB (U-PE-MOB_NS_ZELEZNICKA-STANICA_1, U-PE-MOB_NS_NESTIN_1)
 
 ## Permissions
 

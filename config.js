@@ -382,7 +382,7 @@ export const ROUTERS = Object.freeze([
 	},
 	{
 		id: "1409",
-		name: "MOB_NS_NESTIN_1",
+		name: "U-PE-MOB_NS_NESTIN_1",
 		vendor: "Huawei",
 		type: "MOB",
 		model: "NE40E-X2-M8A",
