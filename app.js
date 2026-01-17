@@ -337,19 +337,20 @@ async function handleReboot() {
 }
 
 function handleAccordionClick(e) {
+	const badge = e.target.closest('.badge-new');
 	const header = e.target.closest('.accordion-header');
 	if (!header) return;
 
 	const item = header.closest('.accordion-item');
-	item.classList.toggle('open');
 
-	// Remove new badge when opened
-	const badge = item.querySelector('.badge-new');
+	// If clicking on badge, remove it and mark seen, but still open
 	if (badge) {
 		badge.remove();
 		const routerId = item.dataset.routerId;
 		markRouterSeen(routerId);
 	}
+
+	item.classList.toggle('open');
 }
 
 async function markRouterSeen(routerId) {
