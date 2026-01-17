@@ -98,8 +98,11 @@ function renderMainContent() {
 	renderFooterStatus();
 
 	// Render countdown
-	if (state.schedulerEnabled && state.lastScan) {
-		countdown.start(elements.countdown, state.lastScan, state.schedulerFrequency);
+	if (state.schedulerEnabled) {
+		const baseTime = state.lastScan || state.schedulerStartTime;
+		if (baseTime) {
+			countdown.start(elements.countdown, baseTime, state.schedulerFrequency);
+		}
 	} else {
 		countdown.stop();
 	}
@@ -226,8 +229,10 @@ async function handleSchedulerToggle(e) {
 
 	if (result.success) {
 		state.schedulerEnabled = enabled;
+		state.schedulerStartTime = result.schedulerStartTime;
 		elements.frequencySelect.disabled = !enabled;
 		setStatus('success', enabled ? 'Scheduler enabled' : 'Scheduler disabled');
+		renderMainContent();
 	} else {
 		setStatus('error', 'Failed to update scheduler');
 		e.target.checked = !enabled;

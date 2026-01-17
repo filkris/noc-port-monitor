@@ -89,6 +89,7 @@ async function getExtensionState() {
 	return {
 		schedulerEnabled: data[STORAGE_KEYS.SCHEDULER_ENABLED] ?? false,
 		schedulerFrequency: data[STORAGE_KEYS.SCHEDULER_FREQUENCY] ?? '1h',
+		schedulerStartTime: data.schedulerStartTime ?? null,
 		sessionId: data[STORAGE_KEYS.SESSION_ID],
 		routerData: data[STORAGE_KEYS.ROUTER_DATA] ?? {},
 		lastScan: data[STORAGE_KEYS.LAST_SCAN],
@@ -98,10 +99,19 @@ async function getExtensionState() {
 }
 
 async function setScheduler(enabled, frequency) {
-	await chrome.storage.local.set({
+	const updates = {
 		[STORAGE_KEYS.SCHEDULER_ENABLED]: enabled,
 		[STORAGE_KEYS.SCHEDULER_FREQUENCY]: frequency
-	});
+	};
+
+	// Set schedulerStartTime when enabling scheduler
+	if (enabled) {
+		updates.schedulerStartTime = Date.now();
+	} else {
+		updates.schedulerStartTime = null;
+	}
+
+	await chrome.storage.local.set(updates);
 
 	await chrome.alarms.clear(ALARM_NAME);
 
@@ -113,7 +123,7 @@ async function setScheduler(enabled, frequency) {
 		});
 	}
 
-	return { success: true };
+	return { success: true, schedulerStartTime: updates.schedulerStartTime };
 }
 
 async function handleSessionDetected(sessionId) {
