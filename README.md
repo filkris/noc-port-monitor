@@ -16,14 +16,21 @@ Chrome MV3 extension for monitoring router port status changes from NOC Portal.
 ## Architecture
 
 ```
-parser/
-├── manifest.json      # MV3 manifest
-├── background.js      # Service worker (scheduler, API, parsing)
-├── content.js         # Session/auth detection on NOC Portal
-├── app.html         # Popup UI
-├── app.css          # Styles
-├── app.js           # UI controller
-└── config.js          # Router definitions
+noc-port-monitor/
+├── manifest.json         # MV3 manifest
+├── background.js         # Service worker entry point
+├── content.js            # Session/auth detection on NOC Portal
+├── app.html              # Popup UI
+├── app.css               # Styles
+├── app.js                # UI controller
+└── modules/
+    ├── constants.js      # App constants and configuration
+    ├── routers.js        # Router definitions
+    ├── api.js            # API calls and request building
+    ├── parser.js         # Log parsing utilities
+    ├── storage.js        # Chrome storage operations
+    ├── scanner.js        # Router scanning operations
+    └── countdown.js      # Countdown timer module
 ```
 
 ## Installation
@@ -107,7 +114,7 @@ Clears all storage and reinitializes extension.
 
 ## Routers
 
-30 preconfigured routers in `config.js`:
+30 preconfigured routers in `modules/routers.js`:
 - 2 TRANSIT (N-PE)
 - 27 MAN (U-PE)
 - 2 MOB (U-PE-MOB_NS_ZELEZNICKA-STANICA_1, U-PE-MOB_NS_NESTIN_1)
@@ -121,6 +128,7 @@ Clears all storage and reinitializes extension.
 
 ## Version
 
+- **v1.6.0** - Modular architecture refactor, code organized into modules/ directory
 - **v1.5.0** - Live router name in status bar during scan, accordion state preserved on updates, single-click badge removal
 - **v1.4.0** - Incremental scan progress updates, countdown on first scheduler enable, centered auth screen
 - **v1.3.0** - Separated Scheduler/Manual sections, footer status bar, "new" badge on router state changes, port display as "Port #X/Y/Z"

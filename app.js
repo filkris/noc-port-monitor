@@ -1,6 +1,6 @@
-// popup.js - Popup UI Controller
+// app.js - Popup UI Controller
 
-import * as countdown from './countdown.js';
+import * as countdown from './modules/countdown.js';
 
 const elements = {};
 let state = {};
