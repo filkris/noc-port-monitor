@@ -37,7 +37,7 @@ html.resizable body {
 	flex-direction: column;
 	align-items: center;
 	justify-content: center;
-	height: 200px;
+	height: 100%;
 	padding: 20px;
 	text-align: center;
 }
