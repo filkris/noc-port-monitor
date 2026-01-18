@@ -12,10 +12,47 @@ import {
 } from './modules/storage.js';
 import { scanAllRouters, scanSingleRouter } from './modules/scanner.js';
 
+const MENU_ID_GLOBAL = 'mode-global';
+const MENU_ID_SCOPED = 'mode-scoped';
+
 // Initialize on install
 chrome.runtime.onInstalled.addListener(async () => {
 	await initializeStorage();
 	await chrome.sidePanel.setPanelBehavior({ openPanelOnActionClick: true });
+	await createContextMenus();
+});
+
+// Create context menus
+async function createContextMenus() {
+	await chrome.contextMenus.removeAll();
+
+	const { sidePanelMode } = await chrome.storage.sync.get(STORAGE_KEYS.SIDE_PANEL_MODE);
+	const mode = sidePanelMode || 'global';
+
+	chrome.contextMenus.create({
+		id: MENU_ID_GLOBAL,
+		title: 'Global',
+		type: 'radio',
+		checked: mode === 'global',
+		contexts: ['action']
+	});
+
+	chrome.contextMenus.create({
+		id: MENU_ID_SCOPED,
+		title: 'Scoped',
+		type: 'radio',
+		checked: mode === 'scoped',
+		contexts: ['action']
+	});
+}
+
+// Handle context menu clicks
+chrome.contextMenus.onClicked.addListener(async (info) => {
+	if (info.menuItemId === MENU_ID_GLOBAL || info.menuItemId === MENU_ID_SCOPED) {
+		const mode = info.menuItemId === MENU_ID_GLOBAL ? 'global' : 'scoped';
+		await chrome.storage.sync.set({ [STORAGE_KEYS.SIDE_PANEL_MODE]: mode });
+		await updateAllTabs();
+	}
 });
 
 // Handle alarms
@@ -27,7 +64,7 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 
 // Side panel mode management
 async function updateSidePanelForTab(tabId, url) {
-	const { sidePanelMode } = await chrome.storage.local.get(STORAGE_KEYS.SIDE_PANEL_MODE);
+	const { sidePanelMode } = await chrome.storage.sync.get(STORAGE_KEYS.SIDE_PANEL_MODE);
 	const mode = sidePanelMode || 'global';
 
 	if (mode === 'global') {
@@ -43,6 +80,16 @@ async function updateSidePanelForTab(tabId, url) {
 			path: 'app.html',
 			enabled
 		});
+	}
+}
+
+// Update all tabs
+async function updateAllTabs() {
+	const tabs = await chrome.tabs.query({});
+	for (const tab of tabs) {
+		if (tab.id) {
+			await updateSidePanelForTab(tab.id, tab.url);
+		}
 	}
 }
 
@@ -96,18 +143,12 @@ async function handleMessage(message) {
 			return updateRouterSeen(message.routerId, message.lastSeenState);
 
 		case 'setSidePanelMode':
-			await chrome.storage.local.set({ [STORAGE_KEYS.SIDE_PANEL_MODE]: message.mode });
-			// Update all existing tabs
-			const tabs = await chrome.tabs.query({});
-			for (const tab of tabs) {
-				if (tab.id) {
-					await updateSidePanelForTab(tab.id, tab.url);
-				}
-			}
+			await chrome.storage.sync.set({ [STORAGE_KEYS.SIDE_PANEL_MODE]: message.mode });
+			await updateAllTabs();
 			return { success: true };
 
 		case 'getSidePanelMode':
-			const result = await chrome.storage.local.get(STORAGE_KEYS.SIDE_PANEL_MODE);
+			const result = await chrome.storage.sync.get(STORAGE_KEYS.SIDE_PANEL_MODE);
 			return { mode: result[STORAGE_KEYS.SIDE_PANEL_MODE] || 'global' };
 
 		default:

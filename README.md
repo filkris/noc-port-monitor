@@ -143,9 +143,11 @@ Three-step wizard process for fetching router logs:
 | `cookies` | Session detection from NOC Portal |
 | `sidePanel` | Enable side panel UI |
 | `tabs` | React to tab changes for scoped mode |
+| `contextMenus` | Right-click menu for mode selection |
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v2.3.0** - Context menu (right-click extension icon) for Global/Scoped mode selection, synced via chrome.storage.sync
 - **v2.2.0** - Side Panel API with global/scoped modes, tab listeners for dynamic panel control
 - **v2.1.0** - Open side panel by left clicking on extension icon
 - **v2.0.0** - Migrated from popup to side panel extension, responsive UI sizing
