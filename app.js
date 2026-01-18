@@ -23,7 +23,6 @@ function cacheElements() {
 	elements.frequencySelect = document.getElementById('frequencySelect');
 	elements.scanRouterSelect = document.getElementById('scanRouterSelect');
 	elements.scanBtn = document.getElementById('scanBtn');
-	elements.rebootBtn = document.getElementById('rebootBtn');
 	elements.countdown = document.getElementById('countdown');
 	elements.statusBar = document.getElementById('statusBar');
 	elements.routerAccordion = document.getElementById('routerAccordion');
@@ -38,7 +37,6 @@ function bindEvents() {
 	elements.schedulerToggle.addEventListener('change', handleSchedulerToggle);
 	elements.frequencySelect.addEventListener('change', handleFrequencyChange);
 	elements.scanBtn.addEventListener('click', handleScan);
-	elements.rebootBtn.addEventListener('click', handleReboot);
 	elements.routerAccordion.addEventListener('click', handleAccordionClick);
 }
 
@@ -319,26 +317,6 @@ async function handleScan() {
 	}
 
 	elements.scanBtn.disabled = false;
-	clearStatusAfterDelay();
-}
-
-async function handleReboot() {
-	if (!confirm('This will clear all data and reset the extension. Continue?')) {
-		return;
-	}
-
-	setStatus('loading', 'Rebooting extension...');
-
-	const result = await chrome.runtime.sendMessage({ action: 'reboot' });
-
-	if (result.success) {
-		setStatus('success', 'Extension rebooted');
-		await loadState();
-		render();
-	} else {
-		setStatus('error', 'Reboot failed');
-	}
-
 	clearStatusAfterDelay();
 }
 

@@ -14,6 +14,7 @@ import { scanAllRouters, scanSingleRouter } from './modules/scanner.js';
 
 const MENU_ID_GLOBAL = 'mode-global';
 const MENU_ID_SCOPED = 'mode-scoped';
+const MENU_ID_REBOOT = 'reboot-extension';
 
 // Initialize on install
 chrome.runtime.onInstalled.addListener(async () => {
@@ -44,6 +45,19 @@ async function createContextMenus() {
 		checked: mode === 'scoped',
 		contexts: ['action']
 	});
+
+	chrome.contextMenus.create({
+		id: 'separator',
+		type: 'separator',
+		contexts: ['action']
+	});
+
+	chrome.contextMenus.create({
+		id: MENU_ID_REBOOT,
+		title: 'Reboot extension',
+		type: 'normal',
+		contexts: ['action']
+	});
 }
 
 // Handle context menu clicks
@@ -52,6 +66,8 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
 		const mode = info.menuItemId === MENU_ID_GLOBAL ? 'global' : 'scoped';
 		await chrome.storage.sync.set({ [STORAGE_KEYS.SIDE_PANEL_MODE]: mode });
 		await updateAllTabs();
+	} else if (info.menuItemId === MENU_ID_REBOOT) {
+		await rebootExtension();
 	}
 });
 
