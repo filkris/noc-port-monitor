@@ -147,6 +147,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v2.5.1** - Fixed NEW badge reappearing during scan after being dismissed
 - **v2.5.0** - UI restructure: moved scheduler/manual sections into header, router accordion wrapped in main tag
 - **v2.4.0** - Moved "Reboot extension" to context menu, removed reboot button from UI
 - **v2.3.0** - Context menu (right-click extension icon) for Global/Scoped mode selection, synced via chrome.storage.sync

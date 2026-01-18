@@ -4,6 +4,7 @@ import * as countdown from './modules/countdown.js';
 
 const elements = {};
 let state = {};
+const seenRouters = new Map(); // Track locally dismissed badges
 
 document.addEventListener('DOMContentLoaded', init);
 
@@ -338,16 +339,18 @@ function handleAccordionClick(e) {
 }
 
 function markRouterSeen(routerId) {
+	const currentStates = getCurrentPortStates(routerId);
+	// Track locally to survive re-renders during scanning
+	seenRouters.set(routerId, currentStates);
 	if (state.routerData?.[routerId]) {
-		// Update local state immediately to prevent badge reappearing on re-render
-		state.routerData[routerId].lastSeenState = getCurrentPortStates(routerId);
-		// Persist to storage asynchronously (don't await)
-		chrome.runtime.sendMessage({
-			action: 'updateRouterSeen',
-			routerId,
-			lastSeenState: state.routerData[routerId].lastSeenState
-		});
+		state.routerData[routerId].lastSeenState = currentStates;
 	}
+	// Persist to storage asynchronously (don't await)
+	chrome.runtime.sendMessage({
+		action: 'updateRouterSeen',
+		routerId,
+		lastSeenState: currentStates
+	});
 }
 
 function getCurrentPortStates(routerId) {
@@ -362,10 +365,17 @@ function getCurrentPortStates(routerId) {
 
 function hasNewChanges(routerId) {
 	const data = state.routerData?.[routerId];
-	if (!data?.ports || !data.lastSeenState) return Object.keys(data?.ports || {}).length > 0;
+	if (!data?.ports) return false;
+
+	// Check local seen state first (survives re-renders during scanning)
+	const localSeen = seenRouters.get(routerId);
+	const lastSeen = localSeen || data.lastSeenState;
+
+	if (!lastSeen) return Object.keys(data.ports).length > 0;
+
 	const current = getCurrentPortStates(routerId);
-	for (const [port, state] of Object.entries(current)) {
-		if (data.lastSeenState[port] !== state) return true;
+	for (const [port, portState] of Object.entries(current)) {
+		if (lastSeen[port] !== portState) return true;
 	}
 	return false;
 }
