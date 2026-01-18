@@ -16,8 +16,11 @@ export const STORAGE_KEYS = {
 	SESSION_ID: 'sessionId',
 	ROUTER_DATA: 'routerData',
 	LAST_SCAN: 'lastScan',
-	AUTH_STATE: 'authState'
+	AUTH_STATE: 'authState',
+	SIDE_PANEL_MODE: 'sidePanelMode'
 };
+
+export const SCOPED_ORIGIN = 'https://nocportal.telekom.rs';
 
 export const FREQUENCY_MAP = {
 	'1h': 60,

@@ -12,6 +12,7 @@ Chrome MV3 side panel extension for monitoring router port status changes from N
 - **New Badge**: Visual indicator for routers with state changes since last viewed
 - **Persistent Background**: Service worker runs while NOC Portal tab is open
 - **Auto Session Detection**: Detects login state and session from NOC Portal cookies
+- **Side Panel Modes**: Global (all tabs) or Scoped (NOC Portal only)
 
 ## Architecture
 
@@ -102,6 +103,7 @@ Port names are extracted and formatted as "Port #X/Y/Z".
   schedulerStartTime: number,
   sessionId: string | null,
   authState: 'logged_in' | 'logged_out' | 'unknown',
+  sidePanelMode: 'global' | 'scoped',
   routerData: {
     [routerId]: {
       ports: { [portId]: [{ state, timestamp, raw }] },
@@ -140,10 +142,12 @@ Three-step wizard process for fetching router logs:
 | `alarms` | Scheduled scan intervals |
 | `cookies` | Session detection from NOC Portal |
 | `sidePanel` | Enable side panel UI |
+| `tabs` | React to tab changes for scoped mode |
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
-- **v2.0.1** - Open side panel by left clicking on extension icon
+- **v2.2.0** - Side Panel API with global/scoped modes, tab listeners for dynamic panel control
+- **v2.1.0** - Open side panel by left clicking on extension icon
 - **v2.0.0** - Migrated from popup to side panel extension, responsive UI sizing
 - **v1.6.1** - Removed resizable popup, fixed popup height to 600px
 - **v1.6.0** - Modular architecture refactor, code organized into modules/ directory
