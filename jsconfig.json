@@ -5,5 +5,5 @@
 			"@/*": ["src/*"]
 		}
 	},
-	"include": ["src", "vite.config.js", "tailwind.config.js"]
+	"include": ["src", "vite.config.js"]
 }
