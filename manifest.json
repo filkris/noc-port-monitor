@@ -1,12 +1,13 @@
 {
 	"manifest_version": 3,
 	"name": "NOC Port Monitor",
-	"version": "1.6.2",
+	"version": "2.0.0",
 	"description": "Monitor router port status changes from NOC Portal",
 	"permissions": [
 		"storage",
 		"alarms",
-		"cookies"
+		"cookies",
+		"sidePanel"
 	],
 	"host_permissions": [
 		"https://nocportal.telekom.rs/*"
@@ -15,8 +16,10 @@
 		"service_worker": "background.js",
 		"type": "module"
 	},
+	"side_panel": {
+		"default_path": "app.html"
+	},
 	"action": {
-		"default_popup": "app.html",
 		"default_icon": {
 			"16": "icon16.png",
 			"48": "icon48.png",

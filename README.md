@@ -1,6 +1,6 @@
 # NOC Port Monitor - Chrome Extension
 
-Chrome MV3 extension for monitoring router port status changes from NOC Portal.
+Chrome MV3 side panel extension for monitoring router port status changes from NOC Portal.
 
 ## Features
 
@@ -20,7 +20,7 @@ noc-port-monitor/
 ├── manifest.json         # MV3 manifest
 ├── background.js         # Service worker entry point
 ├── content.js            # Session/auth detection on NOC Portal
-├── app.html              # Popup UI (400x800px)
+├── app.html              # Side panel UI
 ├── app.css               # Styles
 ├── app.js                # UI controller
 └── modules/
@@ -43,7 +43,7 @@ noc-port-monitor/
 ## Usage
 
 1. **Login** to https://nocportal.telekom.rs
-2. **Click extension icon** in toolbar
+2. **Click extension icon** in toolbar to open the side panel
 3. **Enable Scheduler** and select frequency, or
 4. **Click Scan** to run manual scan
 
@@ -139,10 +139,12 @@ Three-step wizard process for fetching router logs:
 | `storage` | Persist router data and settings |
 | `alarms` | Scheduled scan intervals |
 | `cookies` | Session detection from NOC Portal |
+| `sidePanel` | Enable side panel UI |
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
 
+- **v2.0.0** - Migrated from popup to side panel extension, responsive UI sizing
 - **v1.6.1** - Removed resizable popup, fixed popup height to 600px
 - **v1.6.0** - Modular architecture refactor, code organized into modules/ directory
 - **v1.5.0** - Live router name in status bar during scan, accordion state preserved on updates, single-click badge removal
