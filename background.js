@@ -79,32 +79,43 @@ chrome.alarms.onAlarm.addListener(async (alarm) => {
 });
 
 // Side panel mode management
-async function updateSidePanelForTab(tabId, url) {
+async function updateSidePanelForTab(tabId, isNocPortal) {
 	const { sidePanelMode } = await chrome.storage.sync.get(STORAGE_KEYS.SIDE_PANEL_MODE);
 	const mode = sidePanelMode || 'global';
 
-	if (mode === 'global') {
+	try {
 		await chrome.sidePanel.setOptions({
 			tabId,
 			path: 'app.html',
-			enabled: true
+			enabled: mode === 'global' || isNocPortal
 		});
-	} else {
-		const enabled = url?.startsWith(SCOPED_ORIGIN) || false;
-		await chrome.sidePanel.setOptions({
-			tabId,
-			path: 'app.html',
-			enabled
-		});
+	} catch (e) {
+		// Tab may have been closed or is restricted
 	}
 }
 
 // Update all tabs
 async function updateAllTabs() {
-	const tabs = await chrome.tabs.query({});
-	for (const tab of tabs) {
+	const { sidePanelMode } = await chrome.storage.sync.get(STORAGE_KEYS.SIDE_PANEL_MODE);
+	const mode = sidePanelMode || 'global';
+
+	// Get NOC Portal tab IDs
+	const nocTabs = await chrome.tabs.query({ url: `${SCOPED_ORIGIN}/*` });
+	const nocTabIds = new Set(nocTabs.map(t => t.id));
+
+	// Update all tabs
+	const allTabs = await chrome.tabs.query({});
+	for (const tab of allTabs) {
 		if (tab.id) {
-			await updateSidePanelForTab(tab.id, tab.url);
+			try {
+				await chrome.sidePanel.setOptions({
+					tabId: tab.id,
+					path: 'app.html',
+					enabled: mode === 'global' || nocTabIds.has(tab.id)
+				});
+			} catch (e) {
+				// Tab may be restricted
+			}
 		}
 	}
 }
@@ -113,7 +124,8 @@ async function updateAllTabs() {
 chrome.tabs.onActivated.addListener(async (activeInfo) => {
 	try {
 		const tab = await chrome.tabs.get(activeInfo.tabId);
-		await updateSidePanelForTab(activeInfo.tabId, tab.url);
+		const isNocPortal = tab.url?.startsWith(SCOPED_ORIGIN) || false;
+		await updateSidePanelForTab(activeInfo.tabId, isNocPortal);
 	} catch (e) {
 		// Tab may not exist
 	}
@@ -122,7 +134,8 @@ chrome.tabs.onActivated.addListener(async (activeInfo) => {
 // React to tab URL updates
 chrome.tabs.onUpdated.addListener(async (tabId, changeInfo) => {
 	if (changeInfo.url) {
-		await updateSidePanelForTab(tabId, changeInfo.url);
+		const isNocPortal = changeInfo.url.startsWith(SCOPED_ORIGIN);
+		await updateSidePanelForTab(tabId, isNocPortal);
 	}
 });
 
