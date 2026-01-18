@@ -143,7 +143,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
-
+- **v2.0.1** - Open side panel by left clicking on extension icon
 - **v2.0.0** - Migrated from popup to side panel extension, responsive UI sizing
 - **v1.6.1** - Removed resizable popup, fixed popup height to 600px
 - **v1.6.0** - Modular architecture refactor, code organized into modules/ directory

@@ -17,6 +17,11 @@ chrome.runtime.onInstalled.addListener(async () => {
 	await initializeStorage();
 });
 
+// Open side panel when clicking extension icon
+chrome.action.onClicked.addListener((tab) => {
+	chrome.sidePanel.open({ tabId: tab.id });
+});
+
 // Handle alarms
 chrome.alarms.onAlarm.addListener(async (alarm) => {
 	if (alarm.name === ALARM_NAME) {
