@@ -2,6 +2,8 @@
 
 Chrome MV3 side panel extension for monitoring router port status changes from NOC Portal.
 
+Built with React + Vite + Tailwind CSS.
+
 ## Features
 
 - **Scheduler**: Automated log collection at configurable intervals (1h, 2h, 3h, 6h)
@@ -18,28 +20,44 @@ Chrome MV3 side panel extension for monitoring router port status changes from N
 
 ```
 noc-port-monitor/
-├── manifest.json         # MV3 manifest
-├── background.js         # Service worker entry point
-├── content.js            # Session/auth detection on NOC Portal
-├── app.html              # Side panel UI
-├── app.css               # Styles
-├── app.js                # UI controller
-└── modules/
-    ├── constants.js      # App constants and configuration
-    ├── routers.js        # Router definitions (30 routers)
-    ├── api.js            # API calls and request building
-    ├── parser.js         # Log parsing utilities
-    ├── storage.js        # Chrome storage operations
-    ├── scanner.js        # Router scanning operations
-    └── countdown.js      # Countdown timer module
+├── public/
+│   ├── manifest.json       # MV3 manifest
+│   └── assets/             # Extension icons
+├── src/
+│   ├── background.js       # Service worker entry point
+│   ├── content.js          # Session/auth detection on NOC Portal
+│   ├── utils/              # Shared utilities
+│   └── app/
+│       ├── index.html      # Side panel entry
+│       ├── app.jsx         # React app root
+│       ├── app.css         # Tailwind styles
+│       ├── components/     # React components
+│       └── hooks/          # Custom React hooks
+├── vite.config.js          # Vite build configuration
+├── tailwind.config.js      # Tailwind configuration
+└── package.json
+```
+
+## Development
+
+```bash
+# Install dependencies
+npm install
+
+# Start dev server
+npm run dev
+
+# Build for production
+npm run build
 ```
 
 ## Installation
 
-1. Open Chrome → `chrome://extensions/`
-2. Enable **Developer mode**
-3. Click **Load unpacked**
-4. Select the extension folder
+1. Run `npm run build` to generate the `dist/` folder
+2. Open Chrome → `chrome://extensions/`
+3. Enable **Developer mode**
+4. Click **Load unpacked**
+5. Select the `dist/` folder
 
 ## Usage
 
@@ -147,6 +165,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.0.0** - Complete rewrite with React + Vite + Tailwind CSS
 - **v2.5.2** - Fixed Global/Scoped mode side panel behavior
 - **v2.5.1** - Fixed NEW badge reappearing during scan after being dismissed
 - **v2.5.0** - UI restructure: moved scheduler/manual sections into header, router accordion wrapped in main tag
