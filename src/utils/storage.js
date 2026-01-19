@@ -24,7 +24,7 @@ export async function getExtensionState() {
 		schedulerStartTime: data.schedulerStartTime ?? null,
 		sessionId: data[STORAGE_KEYS.SESSION_ID],
 		routerData: data[STORAGE_KEYS.ROUTER_DATA] ?? {},
-		lastScan: data[STORAGE_KEYS.LAST_SCAN],
+		lastCheck: data[STORAGE_KEYS.LAST_CHECK],
 		authState: data[STORAGE_KEYS.AUTH_STATE] ?? "unknown",
 		routers: ROUTERS,
 	};

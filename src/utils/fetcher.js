@@ -20,7 +20,7 @@ async function updateRouterData(routerId, result) {
 
 	await chrome.storage.local.set({
 		[STORAGE_KEYS.ROUTER_DATA]: routerData,
-		[STORAGE_KEYS.LAST_SCAN]: Date.now(),
+		[STORAGE_KEYS.LAST_CHECK]: Date.now(),
 	});
 
 	return routerData;
@@ -52,7 +52,7 @@ export async function fetchAllRouters() {
 
 		await chrome.storage.local.set({
 			[STORAGE_KEYS.ROUTER_DATA]: routerData,
-			[STORAGE_KEYS.LAST_SCAN]: Date.now(),
+			[STORAGE_KEYS.LAST_CHECK]: Date.now(),
 		});
 	}
 

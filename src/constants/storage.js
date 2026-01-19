@@ -1,5 +1,5 @@
 export const STORAGE_KEYS = Object.freeze({
-	LAST_SCAN: "lastScan",
+	LAST_CHECK: "lastCheck",
 	AUTH_STATE: "authState",
 	SESSION_ID: "sessionId",
 	ROUTER_DATA: "routerData",
@@ -15,6 +15,6 @@ export const STORAGE_DEFAULTS = Object.freeze({
 	[STORAGE_KEYS.SCHEDULER_FREQUENCY]: 60,
 	[STORAGE_KEYS.SESSION_ID]: null,
 	[STORAGE_KEYS.ROUTER_DATA]: {},
-	[STORAGE_KEYS.LAST_SCAN]: null,
+	[STORAGE_KEYS.LAST_CHECK]: null,
 	[STORAGE_KEYS.AUTH_STATE]: "unknown",
 });
