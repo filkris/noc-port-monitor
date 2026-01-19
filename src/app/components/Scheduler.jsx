@@ -1,18 +1,13 @@
 import { useState, useEffect, useRef } from "react";
 import Select from "./Select";
 import { FREQUENCIES } from "@/constants/frequencies";
+import { formatTime } from "@/utils/helpers";
 
 export default function Scheduler() {
 	const intervalRef = useRef(null);
 	const [countdown, setCountdown] = useState(0);
 	const [frequency, setFrequency] = useState(60);
 	const [schedulerEnabled, setSchedulerEnabled] = useState(false);
-	const formatTime = seconds => {
-		const h = Math.floor(seconds / 3600);
-		const m = Math.floor((seconds % 3600) / 60);
-		const s = seconds % 60;
-		return `${String(h).padStart(2, "0")}:${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")}`;
-	};
 
 	useEffect(() => {
 		if (schedulerEnabled) {
