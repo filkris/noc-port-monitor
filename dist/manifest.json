@@ -19,7 +19,7 @@
 		"type": "module"
 	},
 	"side_panel": {
-		"default_path": "app.html"
+		"default_path": "app/index.html"
 	},
 	"action": {
 		"default_title": "NOC Port Monitor",
