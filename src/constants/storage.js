@@ -10,8 +10,6 @@ export const STORAGE_KEYS = Object.freeze({
 
 export const ALARM_NAME = "portMonitorScan";
 
-export const SCOPED_ORIGIN = "https://nocportal.telekom.rs";
-
 export const STORAGE_DEFAULTS = Object.freeze({
 	[STORAGE_KEYS.SCHEDULER_ENABLED]: false,
 	[STORAGE_KEYS.SCHEDULER_FREQUENCY]: 60,

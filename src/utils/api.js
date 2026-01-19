@@ -1,5 +1,5 @@
-import { UID, LOCALE, COMPANY_IDS } from "@/app/config";
-import { API_BASE, API_ENDPOINTS } from "@/constants/api";
+import { URL_BASE, UID, LOCALE, COMPANY_IDS } from "@/app/config";
+import { API_ENDPOINTS } from "@/constants/api";
 
 const generateRequestId = () => Math.floor(Math.random() * 1000000000);
 
@@ -15,7 +15,7 @@ const buildContext = (router) => ({
 });
 
 export async function apiCall(endpoint, payload, sessionId) {
-	const response = await fetch(`${API_BASE}${endpoint}`, {
+	const response = await fetch(`${URL_BASE}${endpoint}`, {
 		method: "POST",
 		headers: {
 			"Content-Type": "application/json",

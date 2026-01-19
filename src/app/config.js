@@ -1,5 +1,7 @@
 export const UID = 370;
 
+export const URL_BASE = "https://nocportal.telekom.rs";
+
 export const LOCALE = Object.freeze({
 	LANG: "sr@latin",
 	TZ: "Europe/Belgrade",

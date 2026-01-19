@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { Lock } from "lucide-react";
 import { STORAGE_KEYS } from "@/constants/storage";
-import { API_BASE } from "@/constants/api";
+import { URL_BASE } from "@/app/config";
 import Button from "./Button";
 
 export default function Auth() {
@@ -30,7 +30,7 @@ export default function Auth() {
 	}, []);
 
 	const handleOpenPortal = () => {
-		chrome.tabs.create({ url: API_BASE });
+		chrome.tabs.create({ url: URL_BASE });
 	};
 
 	const isLoggedOut = authState === "logged_out";
