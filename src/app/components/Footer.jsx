@@ -1,21 +1,13 @@
 import { useState, useEffect } from "react";
 import { formatDate } from "@/utils/helpers";
+import Notification from "./Notification";
 
 export default function Footer() {
-	const [status, setStatus] = useState({ type: null, message: "" });
 	const [lastScan, setLastScan] = useState(null);
 
 	useEffect(() => {
 		const handleStorageChange = (changes, area) => {
 			if (area !== "local") return;
-
-			if (changes.scanningRouter) {
-				if (changes.scanningRouter.newValue) {
-					setStatus({ type: "loading", message: `Scanning ${changes.scanningRouter.newValue}...` });
-				} else {
-					setStatus({ type: null, message: "" });
-				}
-			}
 
 			if (changes.lastScan?.newValue) {
 				setLastScan(changes.lastScan.newValue);
@@ -31,11 +23,14 @@ export default function Footer() {
 		return () => chrome.storage.onChanged.removeListener(handleStorageChange);
 	}, []);
 
-	const displayText = status.message || (lastScan ? `Last scan: ${formatDate(new Date(lastScan))}` : "");
+	const defaultText = lastScan ? `Last scan: ${formatDate(new Date(lastScan))}` : "";
 
 	return (
-		<footer className="p-2 bg-gray-100 border-t border-gray-200 text-xs text-gray-600">
-			<span>{displayText}</span>
+		<footer className="bg-gray-100 border-t border-gray-200">
+			<Notification />
+			<div className="p-2 text-xs text-gray-600">
+				<span>{defaultText}</span>
+			</div>
 		</footer>
 	);
 }

@@ -2,6 +2,7 @@
 
 @source "../constants/status.js";
 @source "../constants/tags.js";
+@source "../constants/notifications.js";
 
 @theme {
 	--color-primary: #b10d28;
