@@ -6,7 +6,7 @@ export default function AccordionBody({ ports = {} }) {
 	if (portEntries.length === 0) {
 		return (
 			<div className="px-3 pb-3 text-xs text-gray-400">
-				No data yet
+				No data yet...
 			</div>
 		);
 	}
