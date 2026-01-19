@@ -1,9 +1,9 @@
 import Accordion from "./Accordion";
 
-export default function Main() {
+export default function Main({ routerData }) {
 	return (
 		<main className="flex-1 overflow-y-auto">
-			<Accordion />
+			<Accordion routerData={routerData} />
 		</main>
 	);
 }
