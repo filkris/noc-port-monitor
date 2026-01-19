@@ -1,4 +1,5 @@
 import { MENU_IDS } from "./app/constants/menu";
+import { fetchAllRouters, fetchSingleRouter } from "./app/utils/fetcher";
 import { STORAGE_KEYS, ALARM_NAME, SCOPED_ORIGIN } from "./app/constants/storage";
 import {
 	initializeStorage,
@@ -9,7 +10,6 @@ import {
 	updateRouterSeen,
 	rebootExtension,
 } from "./app/utils/storage";
-import { fetchAllRouters, fetchSingleRouter } from "./app/utils/fetcher";
 
 chrome.runtime.onInstalled.addListener(async () => {
 	await initializeStorage();
@@ -44,7 +44,7 @@ async function createContextMenus() {
 	});
 }
 
-chrome.contextMenus.onClicked.addListener(async (info) => {
+chrome.contextMenus.onClicked.addListener(async info => {
 	if (info.menuItemId === MENU_IDS.GLOBAL_MODE) {
 		await chrome.storage.sync.set({ [STORAGE_KEYS.SIDE_PANEL_MODE]: info.checked });
 		await updateAllTabs();
@@ -53,7 +53,7 @@ chrome.contextMenus.onClicked.addListener(async (info) => {
 	}
 });
 
-chrome.alarms.onAlarm.addListener(async (alarm) => {
+chrome.alarms.onAlarm.addListener(async alarm => {
 	if (alarm.name === ALARM_NAME) {
 		await fetchAllRouters();
 	}
@@ -65,7 +65,7 @@ async function updateSidePanelForTab(tabId, isNocPortal) {
 	try {
 		await chrome.sidePanel.setOptions({
 			tabId,
-			path: "app.html",
+			path: "app/index.html",
 			enabled: globalMode || isNocPortal,
 		});
 	} catch {
@@ -77,7 +77,7 @@ async function updateAllTabs() {
 	const { [STORAGE_KEYS.SIDE_PANEL_MODE]: globalMode } = await chrome.storage.sync.get(STORAGE_KEYS.SIDE_PANEL_MODE);
 
 	const nocTabs = await chrome.tabs.query({ url: `${SCOPED_ORIGIN}/*` });
-	const nocTabIds = new Set(nocTabs.map((t) => t.id));
+	const nocTabIds = new Set(nocTabs.map(t => t.id));
 
 	const allTabs = await chrome.tabs.query({});
 	for (const tab of allTabs) {
@@ -85,7 +85,7 @@ async function updateAllTabs() {
 			try {
 				await chrome.sidePanel.setOptions({
 					tabId: tab.id,
-					path: "app.html",
+					path: "app/index.html",
 					enabled: globalMode || nocTabIds.has(tab.id),
 				});
 			} catch {
@@ -95,7 +95,7 @@ async function updateAllTabs() {
 	}
 }
 
-chrome.tabs.onActivated.addListener(async (activeInfo) => {
+chrome.tabs.onActivated.addListener(async activeInfo => {
 	try {
 		const tab = await chrome.tabs.get(activeInfo.tabId);
 		const isNocPortal = tab.url?.startsWith(SCOPED_ORIGIN) || false;
