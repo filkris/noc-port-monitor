@@ -5,7 +5,6 @@ import { resolve } from "path";
 
 export default defineConfig({
 	plugins: [react(), tailwindcss()],
-	base: "./",
 	root: resolve(__dirname, "src"),
 	publicDir: resolve(__dirname, "public"),
 	resolve: {
@@ -28,8 +27,6 @@ export default defineConfig({
 					if (chunk.name === "content") return "content.js";
 					return "assets/[name]-[hash].js";
 				},
-				chunkFileNames: "assets/[name]-[hash].js",
-				assetFileNames: "assets/[name]-[hash][extname]",
 			},
 		},
 	},
