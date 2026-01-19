@@ -1,5 +1,7 @@
 @import "tailwindcss";
 
+@source "../constants/tags.js";
+
 @theme {
 	--color-primary: #b10d28;
 	--color-primary-hover: #c00000;
