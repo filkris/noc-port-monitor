@@ -1,7 +1,8 @@
 import { ChevronDown } from "lucide-react";
 import Status from "./Status";
+import Badge from "./Badge";
 
-export default function AccordionHeader({ name, isOpen, onClick, status = "gray", affectedPorts = 0}) {
+export default function AccordionHeader({ name, isOpen, onClick, status = "gray", affectedPorts = 0, showBadge = false }) {
 	return (
 		<div
 			className="flex justify-between items-center p-3 cursor-pointer hover:bg-gray-50"
@@ -10,6 +11,7 @@ export default function AccordionHeader({ name, isOpen, onClick, status = "gray"
 			<div className="flex items-center gap-2">
 				<Status color={status} />
 				<span className="font-medium">{name}</span>
+				{showBadge && <Badge>NEW</Badge>}
 			</div>
 			<div className="flex items-center gap-4">
 				<span className="text-xs text-gray-500">{affectedPorts}</span>
