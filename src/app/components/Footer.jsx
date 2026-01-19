@@ -34,7 +34,7 @@ export default function Footer() {
 	const displayText = status.message || (lastScan ? `Last scan: ${formatDate(new Date(lastScan))}` : "");
 
 	return (
-		<footer className="fixed bottom-0 left-0 right-0 p-2 bg-gray-100 border-t border-gray-200 text-xs text-gray-600">
+		<footer className="p-2 bg-gray-100 border-t border-gray-200 text-xs text-gray-600">
 			<span>{displayText}</span>
 		</footer>
 	);
