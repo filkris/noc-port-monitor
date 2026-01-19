@@ -1,5 +1,5 @@
-import { ROUTERS } from "../constants/routers";
-import { STORAGE_KEYS, STORAGE_DEFAULTS, ALARM_NAME } from "../constants/storage";
+import { ROUTERS } from "@/constants/routers";
+import { STORAGE_KEYS, STORAGE_DEFAULTS, ALARM_NAME } from "@/constants/storage";
 
 export async function initializeStorage() {
 	const existing = await chrome.storage.local.get(Object.keys(STORAGE_DEFAULTS));

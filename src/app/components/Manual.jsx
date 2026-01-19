@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { ROUTERS } from "../constants/routers";
 import Select from "./Select";
 import Button from "./Button";
+import { ROUTERS } from "@/constants/routers";
 
 const ROUTER_OPTIONS = [
 	{ value: "all", label: "All Routers" },

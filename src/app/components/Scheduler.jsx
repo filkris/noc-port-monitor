@@ -1,10 +1,10 @@
 import { useState } from "react";
-import { FREQUENCIES } from "../constants/frequencies";
 import Select from "./Select";
+import { FREQUENCIES } from "@/constants/frequencies";
 
 export default function Scheduler() {
-	const [schedulerEnabled, setSchedulerEnabled] = useState(false);
 	const [frequency, setFrequency] = useState(60);
+	const [schedulerEnabled, setSchedulerEnabled] = useState(false);
 
 	return (
 		<section className="p-3 border-b border-gray-200">

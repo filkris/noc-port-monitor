@@ -1,4 +1,4 @@
-import { INTERFACE_STATE_PATTERNS, LOG_PATTERNS, EMPTY_OUTPUT } from "../constants/patterns";
+import { INTERFACE_STATE_PATTERNS, LOG_PATTERNS, EMPTY_OUTPUT } from "@/constants/patterns";
 
 function extractLogLines(output) {
 	return output

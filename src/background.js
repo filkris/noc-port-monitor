@@ -1,6 +1,6 @@
-import { MENU_IDS } from "./app/constants/menu";
-import { fetchAllRouters, fetchSingleRouter } from "./app/utils/fetcher";
-import { STORAGE_KEYS, ALARM_NAME, SCOPED_ORIGIN } from "./app/constants/storage";
+import { MENU_IDS } from "@/constants/menu";
+import { fetchAllRouters, fetchSingleRouter } from "@/utils/fetcher";
+import { STORAGE_KEYS, ALARM_NAME, SCOPED_ORIGIN } from "@/constants/storage";
 import {
 	initializeStorage,
 	getExtensionState,
@@ -9,7 +9,7 @@ import {
 	handleAuthStateChanged,
 	updateRouterSeen,
 	rebootExtension,
-} from "./app/utils/storage";
+} from "@/utils/storage";
 
 chrome.runtime.onInstalled.addListener(async () => {
 	await initializeStorage();
