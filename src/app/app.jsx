@@ -13,15 +13,40 @@ function App() {
 	const [routerData, setRouterData] = useState({});
 
 	useEffect(() => {
-		chrome.storage.local.get([
-			STORAGE_KEYS.AUTH_STATE,
-			STORAGE_KEYS.SESSION_ID,
-			STORAGE_KEYS.ROUTER_DATA,
-		]).then((data) => {
-			setAuthState(data[STORAGE_KEYS.AUTH_STATE]);
-			setSessionId(data[STORAGE_KEYS.SESSION_ID]);
+		async function initState() {
+			const data = await chrome.storage.local.get([
+				STORAGE_KEYS.AUTH_STATE,
+				STORAGE_KEYS.SESSION_ID,
+				STORAGE_KEYS.ROUTER_DATA,
+			]);
+
+			let currentSessionId = data[STORAGE_KEYS.SESSION_ID];
+			let currentAuthState = data[STORAGE_KEYS.AUTH_STATE];
+
+			// Fallback: check cookies if no session detected
+			if (!currentSessionId) {
+				try {
+					const cookies = await chrome.cookies.getAll({ domain: "nocportal.telekom.rs" });
+					const sessionCookie = cookies.find((c) => c.name === "session_id");
+					if (sessionCookie?.value) {
+						currentSessionId = sessionCookie.value;
+						currentAuthState = "logged_in";
+						await chrome.storage.local.set({
+							[STORAGE_KEYS.SESSION_ID]: currentSessionId,
+							[STORAGE_KEYS.AUTH_STATE]: currentAuthState,
+						});
+					}
+				} catch {
+					// Cookies API may fail
+				}
+			}
+
+			setAuthState(currentAuthState);
+			setSessionId(currentSessionId);
 			setRouterData(data[STORAGE_KEYS.ROUTER_DATA] || {});
-		});
+		}
+
+		initState();
 
 		const handleStorageChange = (changes, area) => {
 			if (area !== "local") return;
