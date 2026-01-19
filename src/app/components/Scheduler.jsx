@@ -4,7 +4,7 @@ import Select from "./Select";
 
 export default function Scheduler() {
 	const [schedulerEnabled, setSchedulerEnabled] = useState(false);
-	const [frequency, setFrequency] = useState("1h");
+	const [frequency, setFrequency] = useState(60);
 
 	return (
 		<section className="p-3 border-b border-gray-200">
