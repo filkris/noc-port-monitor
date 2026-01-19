@@ -1,7 +1,7 @@
 import { fetchRouterLogs } from "./api";
+import { parseRouterLogs } from "./parser";
 import { ROUTERS } from "../constants/routers";
 import { STORAGE_KEYS } from "../constants/storage";
-import { parseRouterLogs } from "./routerLogParser";
 import { tryGetSessionFromCookies } from "./storage";
 
 async function getSessionId() {

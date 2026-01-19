@@ -1,5 +1,5 @@
-import { API_BASE, API_ENDPOINTS } from "../constants/api";
 import { UID, LOCALE, COMPANY_IDS } from "../config";
+import { API_BASE, API_ENDPOINTS } from "../constants/api";
 
 const generateRequestId = () => Math.floor(Math.random() * 1000000000);
 
