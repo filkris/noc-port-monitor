@@ -12,9 +12,9 @@ export default function Manual() {
 	const [selectedRouter, setSelectedRouter] = useState("all");
 
 	return (
-		<section className="p-3">
+		<section className="p-3 border-b border-gray-200">
 			<div className="mb-3">
-				<span className="font-semibold text-primary">Manual</span>
+				<span className="text-sm font-semibold text-primary">Manual</span>
 			</div>
 			<div className="flex gap-2">
 				<Select
@@ -23,7 +23,7 @@ export default function Manual() {
 					options={ROUTER_OPTIONS}
 					className="flex-1"
 				/>
-				<Button>Scan</Button>
+				<Button>Check</Button>
 			</div>
 		</section>
 	);
