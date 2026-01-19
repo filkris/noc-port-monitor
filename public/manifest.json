@@ -2,7 +2,7 @@
 	"manifest_version": 3,
 	"name": "NOC Port Monitor",
 	"version": "3.0.0",
-	"description": "Chrome MV3 Side Panel extension boilerplate (React + Vite + Tailwind)",
+	"description": "Monitor router port status changes from NOC Portal",
 	"action": { "default_title": "NOC Port Monitor" },
 	"side_panel": { "default_path": "app/index.html" },
 	"permissions": ["storage", "alarms", "cookies", "sidePanel", "tabs", "contextMenus"],
