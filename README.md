@@ -215,6 +215,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.0.2** - Fixed Vite build asset paths for Chrome extension compatibility
 - **v3.0.1** - Fixed side panel path in manifest, added cookie fallback for session detection
 - **v3.0.0** - Complete rewrite with React 19 + Vite 6 + Tailwind CSS 4
   - Modern React architecture with functional components and hooks
