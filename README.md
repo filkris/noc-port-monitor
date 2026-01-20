@@ -222,6 +222,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.3.2** - Updated app.css to style `webkit-scrollbar` correctly
 - **v3.3.1** - Fixed NEW badge logic: shows only when new ports/events added, persists "seen" state
 - **v3.3.0** - Live router name in status bar during check
 - **v3.2.2** - Fixed status logic to check only last event per port
