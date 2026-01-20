@@ -222,6 +222,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.2.1** - Removed `NOTIFICATION_TYPES` constant
 - **v3.2.0** - Updated status indicator logic based on port events
   - `usePortStatus` hook: Gray (default), Red (any DOWN), Green (all UP)
 - **v3.1.0** - Refactored to use custom hooks (`src/hooks/`)
