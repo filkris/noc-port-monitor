@@ -8,14 +8,25 @@ export default function AccordionItem({ router, data }) {
 
 	const status = usePortStatus(data?.ports);
 	const affectedPorts = data?.affectedPorts || 0;
-	const showBadge = status === "red" && data?.lastSeenState !== "seen";
+	const showBadge = data?.lastSeenState !== "seen" && affectedPorts > 0;
+
+	const handleClick = () => {
+		toggle();
+		if (showBadge) {
+			chrome.runtime.sendMessage({
+				action: "updateRouterSeen",
+				routerId: router.id,
+				lastSeenState: "seen",
+			});
+		}
+	};
 
 	return (
 		<div className="border-b border-gray-200">
 			<AccordionHeader
 				name={router.name}
 				isOpen={isOpen}
-				onClick={toggle}
+				onClick={handleClick}
 				status={status}
 				affectedPorts={affectedPorts}
 				showBadge={showBadge}

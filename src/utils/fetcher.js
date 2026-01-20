@@ -14,8 +14,28 @@ async function getSessionId() {
 	return sessionId;
 }
 
+function hasNewEvents(oldData, newData) {
+	if (!oldData?.ports || !newData?.ports) return Object.keys(newData?.ports || {}).length > 0;
+
+	const oldPorts = oldData.ports;
+	const newPorts = newData.ports;
+
+	for (const portId of Object.keys(newPorts)) {
+		if (!oldPorts[portId]) return true;
+		if (newPorts[portId].length > oldPorts[portId].length) return true;
+	}
+
+	return false;
+}
+
 async function updateRouterData(routerId, result) {
 	const { [STORAGE_KEYS.ROUTER_DATA]: routerData = {} } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
+	const oldData = routerData[routerId];
+
+	if (oldData?.lastSeenState === "seen" && !hasNewEvents(oldData, result)) {
+		result.lastSeenState = "seen";
+	}
+
 	routerData[routerId] = result;
 
 	await chrome.storage.local.set({
@@ -41,10 +61,12 @@ export async function fetchAllRouters() {
 		try {
 			const apiResult = await fetchRouterLogs(router, sessionId);
 			const result = parseRouterLogs(apiResult, router);
+			const oldData = routerData[router.id];
 
-			if (routerData[router.id]?.lastSeenState) {
-				result.lastSeenState = routerData[router.id].lastSeenState;
+			if (oldData?.lastSeenState === "seen" && !hasNewEvents(oldData, result)) {
+				result.lastSeenState = "seen";
 			}
+
 			routerData[router.id] = result;
 		} catch (error) {
 			routerData[router.id] = { error: error.message };
