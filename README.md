@@ -1,6 +1,6 @@
 # NOC Port Monitor - Chrome Extension
 
-Chrome MV3 side panel extension for monitoring router port status changes from NOC Portal.
+**NOC Port Monitor** is a Google Chrome Extension built to assist Network Operations Center (NOC) teams in monitoring port status and network activity directly from the browser. It is a Chrome MV3 side panel extension designed for monitoring router port status changes from the NOC Portal.
 
 Built with React 19 + Vite 6 + Tailwind CSS 4.
 
@@ -99,6 +99,8 @@ npm run dev
 # Build for production
 npm run build
 ```
+
+For detailed development workflows and debugging, see DEVELOPMENT.md.
 
 ## Installation
 
