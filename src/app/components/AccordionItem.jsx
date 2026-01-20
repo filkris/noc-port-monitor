@@ -1,14 +1,14 @@
 import AccordionHeader from "./AccordionHeader";
 import AccordionSubheader from "./AccordionSubheader";
 import AccordionBody from "./AccordionBody";
-import { useToggle } from "@/hooks";
+import { useToggle, usePortStatus } from "@/hooks";
 
 export default function AccordionItem({ router, data }) {
 	const [isOpen, toggle] = useToggle(false);
 
-	const status = data?.hasIssues ? "red" : data?.lastUpdated ? "green" : "gray";
+	const status = usePortStatus(data?.ports);
 	const affectedPorts = data?.affectedPorts || 0;
-	const showBadge = data?.hasIssues && data?.lastSeenState !== "seen";
+	const showBadge = status === "red" && data?.lastSeenState !== "seen";
 
 	return (
 		<div className="border-b border-gray-200">
