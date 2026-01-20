@@ -1,10 +1,10 @@
-import { useState } from "react";
 import AccordionHeader from "./AccordionHeader";
 import AccordionSubheader from "./AccordionSubheader";
 import AccordionBody from "./AccordionBody";
+import { useToggle } from "@/hooks";
 
 export default function AccordionItem({ router, data }) {
-	const [isOpen, setIsOpen] = useState(false);
+	const [isOpen, toggle] = useToggle(false);
 
 	const status = data?.hasIssues ? "red" : data?.lastUpdated ? "green" : "gray";
 	const affectedPorts = data?.affectedPorts || 0;
@@ -15,7 +15,7 @@ export default function AccordionItem({ router, data }) {
 			<AccordionHeader
 				name={router.name}
 				isOpen={isOpen}
-				onClick={() => setIsOpen(!isOpen)}
+				onClick={toggle}
 				status={status}
 				affectedPorts={affectedPorts}
 				showBadge={showBadge}

@@ -6,65 +6,45 @@ import Header from "./components/Header";
 import Main from "./components/Main";
 import Footer from "./components/Footer";
 import { STORAGE_KEYS } from "@/constants/storage";
+import { useChromeStorageMulti } from "@/hooks";
+
+const STORAGE_CONFIG = [
+	{ key: STORAGE_KEYS.AUTH_STATE, defaultValue: null },
+	{ key: STORAGE_KEYS.SESSION_ID, defaultValue: null },
+	{ key: STORAGE_KEYS.ROUTER_DATA, defaultValue: {} },
+];
 
 function App() {
-	const [authState, setAuthState] = useState(null);
-	const [sessionId, setSessionId] = useState(null);
-	const [routerData, setRouterData] = useState({});
+	const storageValues = useChromeStorageMulti(STORAGE_CONFIG);
+	const [fallbackChecked, setFallbackChecked] = useState(false);
+
+	const authState = storageValues[STORAGE_KEYS.AUTH_STATE];
+	const sessionId = storageValues[STORAGE_KEYS.SESSION_ID];
+	const routerData = storageValues[STORAGE_KEYS.ROUTER_DATA] || {};
 
 	useEffect(() => {
-		async function initState() {
-			const data = await chrome.storage.local.get([
-				STORAGE_KEYS.AUTH_STATE,
-				STORAGE_KEYS.SESSION_ID,
-				STORAGE_KEYS.ROUTER_DATA,
-			]);
+		if (fallbackChecked) return;
 
-			let currentSessionId = data[STORAGE_KEYS.SESSION_ID];
-			let currentAuthState = data[STORAGE_KEYS.AUTH_STATE];
-
-			// Fallback: check cookies if no session detected
-			if (!currentSessionId) {
+		async function checkCookieFallback() {
+			if (!sessionId) {
 				try {
 					const cookies = await chrome.cookies.getAll({ domain: "nocportal.telekom.rs" });
 					const sessionCookie = cookies.find((c) => c.name === "session_id");
 					if (sessionCookie?.value) {
-						currentSessionId = sessionCookie.value;
-						currentAuthState = "logged_in";
 						await chrome.storage.local.set({
-							[STORAGE_KEYS.SESSION_ID]: currentSessionId,
-							[STORAGE_KEYS.AUTH_STATE]: currentAuthState,
+							[STORAGE_KEYS.SESSION_ID]: sessionCookie.value,
+							[STORAGE_KEYS.AUTH_STATE]: "logged_in",
 						});
 					}
 				} catch {
 					// Cookies API may fail
 				}
 			}
-
-			setAuthState(currentAuthState);
-			setSessionId(currentSessionId);
-			setRouterData(data[STORAGE_KEYS.ROUTER_DATA] || {});
+			setFallbackChecked(true);
 		}
 
-		initState();
-
-		const handleStorageChange = (changes, area) => {
-			if (area !== "local") return;
-
-			if (changes[STORAGE_KEYS.AUTH_STATE]) {
-				setAuthState(changes[STORAGE_KEYS.AUTH_STATE].newValue);
-			}
-			if (changes[STORAGE_KEYS.SESSION_ID]) {
-				setSessionId(changes[STORAGE_KEYS.SESSION_ID].newValue);
-			}
-			if (changes[STORAGE_KEYS.ROUTER_DATA]) {
-				setRouterData(changes[STORAGE_KEYS.ROUTER_DATA].newValue || {});
-			}
-		};
-
-		chrome.storage.onChanged.addListener(handleStorageChange);
-		return () => chrome.storage.onChanged.removeListener(handleStorageChange);
-	}, []);
+		checkCookieFallback();
+	}, [sessionId, fallbackChecked]);
 
 	const isLoggedOut = authState === "logged_out";
 	const hasSession = !!sessionId;

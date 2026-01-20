@@ -3,19 +3,18 @@ import Select from "./Select";
 import Button from "./Button";
 import { notify } from "@/utils/notify";
 import { ROUTERS } from "@/constants/routers";
+import { useAsyncAction } from "@/hooks";
 
 export default function Manual() {
 	const [selectedRouter, setSelectedRouter] = useState("all");
-	const [isLoading, setIsLoading] = useState(false);
+	const { isLoading, execute } = useAsyncAction();
 	const ROUTER_OPTIONS = [
 		{ value: "all", label: "All Routers" },
 		...ROUTERS.map((router) => ({ value: router.id, label: router.name })),
 	];
 
 	const handleCheck = async () => {
-		setIsLoading(true);
-
-		try {
+		await execute(async () => {
 			if (selectedRouter === "all") {
 				notify("loading", "Checking all routers...", 0);
 				const result = await chrome.runtime.sendMessage({ action: "fetchAll" });
@@ -40,11 +39,7 @@ export default function Manual() {
 					notify("error", result.error || "Check failed");
 				}
 			}
-		} catch (error) {
-			notify("error", "Check failed");
-		} finally {
-			setIsLoading(false);
-		}
+		});
 	};
 
 	return (

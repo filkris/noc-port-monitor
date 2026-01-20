@@ -1,41 +1,18 @@
-import { useState, useEffect } from "react";
+import { useEffect } from "react";
 import { formatDate } from "@/utils/helpers";
 import { setNotifyCallback } from "@/utils/notify";
 import { NOTIFICATION_TYPES } from "@/constants/notifications";
 import { STORAGE_KEYS } from "@/constants/storage";
+import { useChromeStorage, useNotification } from "@/hooks";
 
 export default function Footer() {
-	const [lastCheck, setLastCheck] = useState(null);
-	const [notification, setNotification] = useState(null);
+	const lastCheck = useChromeStorage(STORAGE_KEYS.LAST_CHECK, null);
+	const { notification, showNotification } = useNotification();
 
 	useEffect(() => {
-		setNotifyCallback((type, message, duration = 3000) => {
-			setNotification({ type, message });
-			if (duration > 0) {
-				setTimeout(() => setNotification(null), duration);
-			}
-		});
-
+		setNotifyCallback(showNotification);
 		return () => setNotifyCallback(null);
-	}, []);
-
-	useEffect(() => {
-		const handleStorageChange = (changes, area) => {
-			if (area !== "local") return;
-
-			if (changes[STORAGE_KEYS.LAST_CHECK]?.newValue) {
-				setLastCheck(changes[STORAGE_KEYS.LAST_CHECK].newValue);
-			}
-		};
-
-		chrome.storage.onChanged.addListener(handleStorageChange);
-
-		chrome.storage.local.get(STORAGE_KEYS.LAST_CHECK).then((data) => {
-			if (data[STORAGE_KEYS.LAST_CHECK]) setLastCheck(data[STORAGE_KEYS.LAST_CHECK]);
-		});
-
-		return () => chrome.storage.onChanged.removeListener(handleStorageChange);
-	}, []);
+	}, [showNotification]);
 
 	const defaultText = lastCheck ? `Last check: ${formatDate(new Date(lastCheck))}` : "";
 	const displayText = notification?.message || defaultText;
