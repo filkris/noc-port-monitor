@@ -12,7 +12,7 @@ export default function Event({ event }) {
 
 	return (
 		<div className={`${baseClass} ${stateClass}`}>
-			<span className="w-48">{stateText}</span>
+			<span className="w-12">{stateText}</span>
 			<span>{timestamp}</span>
 		</div>
 	);
