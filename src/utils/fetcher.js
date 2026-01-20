@@ -53,10 +53,10 @@ export async function fetchAllRouters() {
 		return { error: "No session - open NOC Portal first" };
 	}
 
-	let { [STORAGE_KEYS.ROUTER_DATA]: routerData = {} } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
-
 	for (const router of ROUTERS) {
 		await chrome.storage.local.set({ scanningRouter: router.name });
+
+		let { [STORAGE_KEYS.ROUTER_DATA]: routerData = {} } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
 
 		try {
 			const apiResult = await fetchRouterLogs(router, sessionId);
@@ -80,7 +80,9 @@ export async function fetchAllRouters() {
 
 	await chrome.storage.local.remove("scanningRouter");
 
-	return { success: true, results: routerData };
+	const { [STORAGE_KEYS.ROUTER_DATA]: finalRouterData = {} } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
+
+	return { success: true, results: finalRouterData };
 }
 
 export async function fetchSingleRouter(routerId) {
