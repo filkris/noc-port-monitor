@@ -9,16 +9,14 @@ export function usePortStatus(ports) {
 		const portEntries = Object.values(ports);
 		const hasDown = portEntries.some((events) => {
 			if (!events || events.length === 0) return false;
-			const lastEvent = events[events.length - 1];
-			return lastEvent?.state === "DOWN";
+			return events[0]?.state === "DOWN";
 		});
 
 		if (hasDown) return "red";
 
 		const allUp = portEntries.every((events) => {
 			if (!events || events.length === 0) return false;
-			const lastEvent = events[events.length - 1];
-			return lastEvent?.state === "UP";
+			return events[0]?.state === "UP";
 		});
 
 		if (allUp) return "green";

@@ -65,12 +65,12 @@ export function parseRouterLogs(data, router) {
 	}
 
 	for (const port of Object.keys(ports)) {
-		ports[port].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
+		ports[port].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
 	}
 
 	const hasIssues = Object.values(ports).some((events) => {
 		if (!events || events.length === 0) return false;
-		return events[events.length - 1]?.state === "DOWN";
+		return events[0]?.state === "DOWN";
 	});
 
 	return {
