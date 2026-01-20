@@ -27,6 +27,13 @@ noc-port-monitor/
 ├── src/
 │   ├── background.js       # Service worker (alarms, messages, context menus)
 │   ├── content.js          # Session/auth detection on NOC Portal
+│   ├── hooks/              # Custom React hooks
+│   │   ├── index.js
+│   │   ├── useAsyncAction.js
+│   │   ├── useChromeStorage.js
+│   │   ├── useCountdown.js
+│   │   ├── useNotification.js
+│   │   └── useToggle.js
 │   ├── constants/          # Configuration constants
 │   │   ├── api.js          # API endpoints
 │   │   ├── frequencies.js  # Scheduler frequency options
@@ -215,6 +222,12 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.1.0** - Refactored to use custom hooks (`src/hooks/`)
+  - `useChromeStorage` / `useChromeStorageMulti` - Chrome storage sync with listeners
+  - `useCountdown` - Interval-based countdown timer
+  - `useAsyncAction` - Loading state wrapper for async operations
+  - `useNotification` - Notification state with auto-clear
+  - `useToggle` - Boolean toggle state
 - **v3.0.2** - Fixed Vite build asset paths for Chrome extension compatibility
 - **v3.0.1** - Fixed side panel path in manifest, added cookie fallback for session detection
 - **v3.0.0** - Complete rewrite with React 19 + Vite 6 + Tailwind CSS 4
