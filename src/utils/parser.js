@@ -44,7 +44,6 @@ export function parseRouterLogs(data, router) {
 	const resultArray = Array.isArray(data?.result) ? data.result : [];
 	const ports = {};
 	let totalEvents = 0;
-	let hasIssues = false;
 
 	for (const item of resultArray) {
 		const output = item?.output;
@@ -62,16 +61,17 @@ export function parseRouterLogs(data, router) {
 
 			ports[event.port].push(event);
 			totalEvents++;
-
-			if (event.state === "DOWN") {
-				hasIssues = true;
-			}
 		}
 	}
 
 	for (const port of Object.keys(ports)) {
-		ports[port].sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
+		ports[port].sort((a, b) => (a.timestamp || 0) - (b.timestamp || 0));
 	}
+
+	const hasIssues = Object.values(ports).some((events) => {
+		if (!events || events.length === 0) return false;
+		return events[events.length - 1]?.state === "DOWN";
+	});
 
 	return {
 		routerId: router.id,
