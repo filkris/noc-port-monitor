@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Select from "./Select";
 import Button from "./Button";
 import { notify } from "@/utils/notify";
@@ -13,10 +13,24 @@ export default function Manual() {
 		...ROUTERS.map((router) => ({ value: router.id, label: router.name })),
 	];
 
+	useEffect(() => {
+		if (!isLoading) return;
+
+		const handleStorageChange = (changes, area) => {
+			if (area !== "local") return;
+			if (changes.scanningRouter?.newValue) {
+				notify("loading", `Checking ${changes.scanningRouter.newValue}...`, 0);
+			}
+		};
+
+		chrome.storage.onChanged.addListener(handleStorageChange);
+		return () => chrome.storage.onChanged.removeListener(handleStorageChange);
+	}, [isLoading]);
+
 	const handleCheck = async () => {
 		await execute(async () => {
 			if (selectedRouter === "all") {
-				notify("loading", "Checking all routers...", 0);
+				notify("loading", "Starting check...", 0);
 				const result = await chrome.runtime.sendMessage({ action: "fetchAll" });
 
 				if (result.success) {
@@ -55,7 +69,7 @@ export default function Manual() {
 					className="flex-1"
 				/>
 				<Button onClick={handleCheck} disabled={isLoading}>
-					{isLoading ? "..." : "Check"}
+					Check
 				</Button>
 			</div>
 		</section>
