@@ -8,7 +8,7 @@ export default function AccordionBody({ ports = {} }) {
 	}
 
 	return (
-		<div className="p-3">
+		<div className="p-3 flex flex-col gap-3">
 			{portEntries.map(([portId, events]) => (
 				<Port key={portId} portId={portId} events={events} />
 			))}
