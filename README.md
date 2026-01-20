@@ -222,6 +222,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.4.3** - Fixed NEW badge state being overwritten during router check
 - **v3.4.2** - Reverted event sorting to newest first
 - **v3.4.1** - Fixed NEW badge reappearing during router check when switching between routers
 - **v3.4.0** - Updated Port and Event component styling (monospace font, colored backgrounds)

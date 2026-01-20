@@ -56,24 +56,26 @@ export async function fetchAllRouters() {
 	for (const router of ROUTERS) {
 		await chrome.storage.local.set({ scanningRouter: router.name });
 
-		let { [STORAGE_KEYS.ROUTER_DATA]: routerData = {} } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
+		const { [STORAGE_KEYS.ROUTER_DATA]: routerDataBefore = {} } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
+		const oldData = routerDataBefore[router.id];
 
+		let result;
 		try {
 			const apiResult = await fetchRouterLogs(router, sessionId);
-			const result = parseRouterLogs(apiResult, router);
-			const oldData = routerData[router.id];
+			result = parseRouterLogs(apiResult, router);
 
 			if (oldData?.lastSeenState === "seen" && !hasNewEvents(oldData, result)) {
 				result.lastSeenState = "seen";
 			}
-
-			routerData[router.id] = result;
 		} catch (error) {
-			routerData[router.id] = { error: error.message };
+			result = { error: error.message };
 		}
 
+		const { [STORAGE_KEYS.ROUTER_DATA]: routerDataAfter = {} } = await chrome.storage.local.get(STORAGE_KEYS.ROUTER_DATA);
+		routerDataAfter[router.id] = result;
+
 		await chrome.storage.local.set({
-			[STORAGE_KEYS.ROUTER_DATA]: routerData,
+			[STORAGE_KEYS.ROUTER_DATA]: routerDataAfter,
 			[STORAGE_KEYS.LAST_CHECK]: Date.now(),
 		});
 	}
