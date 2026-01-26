@@ -1,7 +1,7 @@
 {
 	"manifest_version": 3,
 	"name": "NOC Port Monitor",
-	"version": "3.5.0",
+	"version": "3.5.1",
 	"description": "Monitor router port status changes from NOC Portal",
 	"permissions": [
 		"storage",

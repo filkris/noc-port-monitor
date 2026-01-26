@@ -226,6 +226,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.5.1** - General style improvements
 - **v3.5.0** - Added FAILED/RESUME states for alarm ID `0x08130059` with yellow/amber styling
 - **v3.4.3** - Fixed NEW badge state being overwritten during router check
 - **v3.4.2** - Reverted event sorting to newest first
