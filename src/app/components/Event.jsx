@@ -3,8 +3,8 @@ import { formatDate } from "@/utils/helpers";
 const STATE_CONFIG = {
 	UP: { text: "[UP]", class: "bg-green-50 border border-green-200", textClass: "text-green-600" },
 	DOWN: { text: "[DOWN]", class: "bg-red-50 border border-red-200", textClass: "text-red-600" },
-	FAILED: { text: "[FAILED]", class: "bg-amber-50 border border-amber-300", textClass: "text-amber-600" },
-	RESUME: { text: "[RESUME]", class: "bg-yellow-50 border border-yellow-300", textClass: "text-yellow-600" },
+	FAILURE: { text: "[FAILURE]", class: "bg-orange-50 border border-orange-300", textClass: "text-orange-600" },
+	RESUME: { text: "[RESUME]", class: "bg-blue-50 border border-blue-300", textClass: "text-blue-600" },
 };
 
 export default function Event({ event }) {
