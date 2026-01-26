@@ -8,3 +8,7 @@ export const LOCALE = Object.freeze({
 });
 
 export const COMPANY_IDS = Object.freeze([1]);
+
+export const UI_CONFIG = Object.freeze({
+	MAX_VISIBLE_EVENTS: 15,
+});

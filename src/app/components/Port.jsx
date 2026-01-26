@@ -1,12 +1,16 @@
 import Event from "./Event";
+import { UI_CONFIG } from "@/app/config";
 
 export default function Port({ portId, events }) {
+	const needsScroll = events.length > UI_CONFIG.MAX_VISIBLE_EVENTS;
+	const scrollClass = needsScroll ? "max-h-96 overflow-y-auto" : "";
+
 	return (
 		<div>
 			<div className="font-semibold text-xs text-primary mb-1.5 pb-1 border-b border-gray-200">
 				Port #{portId}
 			</div>
-			<div className="flex flex-col gap-1">
+			<div className={`flex flex-col gap-1 ${scrollClass}`}>
 				{events.map((event, index) => (
 					<Event key={index} event={event} />
 				))}
