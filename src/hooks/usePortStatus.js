@@ -7,19 +7,15 @@ export function usePortStatus(ports) {
 		}
 
 		const portEntries = Object.values(ports);
-		const hasDown = portEntries.some((events) => {
-			if (!events || events.length === 0) return false;
-			return events[0]?.state === "DOWN";
-		});
+		const latestStates = portEntries
+			.filter((events) => events && events.length > 0)
+			.map((events) => events[0]?.state);
 
-		if (hasDown) return "red";
-
-		const allUp = portEntries.every((events) => {
-			if (!events || events.length === 0) return false;
-			return events[0]?.state === "UP";
-		});
-
-		if (allUp) return "green";
+		if (latestStates.length === 0) return "gray";
+		if (latestStates.includes("DOWN")) return "red";
+		if (latestStates.includes("FAILURE")) return "orange";
+		if (latestStates.includes("RESUME")) return "blue";
+		if (latestStates.every((state) => state === "UP")) return "green";
 
 		return "gray";
 	}, [ports]);
