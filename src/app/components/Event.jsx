@@ -1,18 +1,21 @@
 import { formatDate } from "@/utils/helpers";
 
+const STATE_CONFIG = {
+	UP: { text: "[UP]", class: "bg-green-50 border border-green-200" },
+	DOWN: { text: "[DOWN]", class: "bg-red-50 border border-red-200" },
+	FAILED: { text: "[FAILED]", class: "bg-amber-50 border border-amber-300" },
+	RESUME: { text: "[RESUME]", class: "bg-yellow-50 border border-yellow-300" },
+};
+
 export default function Event({ event }) {
-	const isUp = event.state === "UP";
-	const stateText = isUp ? "[UP]" : "[DOWN]";
+	const config = STATE_CONFIG[event.state] || STATE_CONFIG.DOWN;
 	const timestamp = event.timestamp ? formatDate(new Date(event.timestamp)) : "Unknown time";
 
 	const baseClass = "flex items-center gap-2 px-2 py-1 rounded text-[11px] font-mono";
-	const stateClass = isUp
-		? "bg-green-50 border border-green-200"
-		: "bg-red-50 border border-red-200";
 
 	return (
-		<div className={`${baseClass} ${stateClass}`}>
-			<span className="w-12">{stateText}</span>
+		<div className={`${baseClass} ${config.class}`}>
+			<span className="w-16">{config.text}</span>
 			<span>{timestamp}</span>
 		</div>
 	);
