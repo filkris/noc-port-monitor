@@ -8,9 +8,9 @@ Built with React 19 + Vite 6 + Tailwind CSS 4.
 
 - **Scheduler**: Automated log collection at configurable intervals (1h, 2h, 3h, 6h)
 - **Manual Check**: Check all routers or individual router on demand
-- **Port Status Tracking**: Detects UP/DOWN/FAILED/RESUME events with timestamps
+- **Port Status Tracking**: Detects UP/DOWN/FAILURE/RESUME events with timestamps
 - **Router Accordion**: Expandable list showing affected ports per router
-- **Status Indicators**: Green (all ports UP), Red (any port DOWN/FAILED), Gray (no data)
+- **Status Indicators**: Red (DOWN), Orange (FAILURE), Blue (RESUME), Green (UP), Gray (no data)
 - **New Badge**: Visual indicator for routers with state changes since last viewed
 - **Persistent Background**: Service worker runs while NOC Portal tab is open
 - **Auto Session Detection**: Detects login state and session from NOC Portal cookies
@@ -55,7 +55,7 @@ noc-port-monitor/
 │       ├── index.html      # Side panel entry
 │       ├── app.jsx         # React app root
 │       ├── app.css         # Tailwind 4 styles with @theme
-│       ├── config.js       # App configuration (URL, UID, locale)
+│       ├── config.js       # App configuration (URL, UID, locale, UI settings)
 │       └── components/     # React components
 │           ├── Accordion.jsx
 │           ├── AccordionBody.jsx
@@ -144,7 +144,7 @@ For detailed development workflows and debugging, see DEVELOPMENT.md.
 Each router shows:
 - **Header**: Status indicator (colored dot), router name, "NEW" badge, affected port count, chevron
 - **Subheader**: Vendor tag, network type tag, model, IP address
-- **Body**: Port groups with chronological UP/DOWN/FAILED/RESUME events
+- **Body**: Port groups with chronological UP/DOWN/FAILURE/RESUME events
 
 Clicking header opens/closes accordion and dismisses "NEW" badge.
 
@@ -160,7 +160,7 @@ Log events are parsed using specific alarm IDs:
 |-------|-----------|-----------|
 | DOWN | `0x0813005b`, `0x081300a8`, `0x80fa0003` | No clearType |
 | UP | `0x0813005b`, `0x081300a8`, `0x80fa0003` | `clearType=service_resume` |
-| FAILED | `0x08130059` | No clearType |
+| FAILURE | `0x08130059` | No clearType |
 | RESUME | `0x08130059` | `clearType=service_resume` |
 
 Port names are extracted and formatted as "Port #X/Y/Z".
@@ -226,8 +226,12 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.5.5** - Adjusted RESUME colors to darker blue shades
+- **v3.5.4** - Added scrollable port events when exceeding configurable limit (default: 15)
+- **v3.5.3** - Added status indicator priority: DOWN (red) > FAILURE (orange) > RESUME (blue) > UP (green)
+- **v3.5.2** - Renamed FAILED to FAILURE, updated FAILURE (orange) and RESUME (blue) colors
 - **v3.5.1** - General style improvements
-- **v3.5.0** - Added FAILED/RESUME states for alarm ID `0x08130059` with yellow/amber styling
+- **v3.5.0** - Added FAILURE/RESUME states for alarm ID `0x08130059` with yellow/amber styling
 - **v3.4.3** - Fixed NEW badge state being overwritten during router check
 - **v3.4.2** - Reverted event sorting to newest first
 - **v3.4.1** - Fixed NEW badge reappearing during router check when switching between routers
