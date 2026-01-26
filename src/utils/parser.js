@@ -10,11 +10,19 @@ function extractLogLines(output) {
 }
 
 function parseLogLine(line) {
-	const hasAlarmId = line.includes(`alarmID=${INTERFACE_STATE_PATTERNS.ALARM_ID}`);
-	if (!hasAlarmId) return null;
+	const isDownAlarm = INTERFACE_STATE_PATTERNS.DOWN_ALARM_IDS.some((id) => line.includes(`alarmID=${id}`));
+	const isFailedAlarm = INTERFACE_STATE_PATTERNS.FAILURE_ALARM_IDS.some((id) => line.includes(`alarmID=${id}`));
+
+	if (!isDownAlarm && !isFailedAlarm) return null;
 
 	const hasClearType = line.includes(`clearType=${INTERFACE_STATE_PATTERNS.CLEAR_TYPE}`);
-	const isUp = hasClearType;
+
+	let state;
+	if (isDownAlarm) {
+		state = hasClearType ? "UP" : "DOWN";
+	} else {
+		state = hasClearType ? "RESUME" : "FAILURE";
+	}
 
 	const portMatch = line.match(LOG_PATTERNS.PORT);
 	const port = portMatch ? portMatch[1] : null;
@@ -32,7 +40,7 @@ function parseLogLine(line) {
 	}
 
 	return {
-		state: isUp ? "UP" : "DOWN",
+		state,
 		port,
 		timestamp,
 		date: timestamp ? new Date(timestamp).toISOString() : null,
@@ -70,7 +78,8 @@ export function parseRouterLogs(data, router) {
 
 	const hasIssues = Object.values(ports).some((events) => {
 		if (!events || events.length === 0) return false;
-		return events[0]?.state === "DOWN";
+		const latestState = events[0]?.state;
+		return latestState === "DOWN" || latestState === "FAILURE";
 	});
 
 	return {

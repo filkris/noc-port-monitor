@@ -1,5 +1,6 @@
 export const INTERFACE_STATE_PATTERNS = Object.freeze({
-	ALARM_ID: "0x0813005b",
+	DOWN_ALARM_IDS: ["0x0813005b", "0x081300a8", "0x80fa0003"],
+	FAILURE_ALARM_IDS: ["0x08130059"],
 	CLEAR_TYPE: "service_resume",
 });
 
