@@ -1,10 +1,10 @@
 import { formatDate } from "@/utils/helpers";
 
 const STATE_CONFIG = {
-	UP: { text: "[UP]", class: "bg-green-50 border border-green-200" },
-	DOWN: { text: "[DOWN]", class: "bg-red-50 border border-red-200" },
-	FAILED: { text: "[FAILED]", class: "bg-amber-50 border border-amber-300" },
-	RESUME: { text: "[RESUME]", class: "bg-yellow-50 border border-yellow-300" },
+	UP: { text: "[UP]", class: "bg-green-50 border border-green-200", textClass: "text-green-600" },
+	DOWN: { text: "[DOWN]", class: "bg-red-50 border border-red-200", textClass: "text-red-600" },
+	FAILED: { text: "[FAILED]", class: "bg-amber-50 border border-amber-300", textClass: "text-amber-600" },
+	RESUME: { text: "[RESUME]", class: "bg-yellow-50 border border-yellow-300", textClass: "text-yellow-600" },
 };
 
 export default function Event({ event }) {
@@ -15,7 +15,7 @@ export default function Event({ event }) {
 
 	return (
 		<div className={`${baseClass} ${config.class}`}>
-			<span className="w-16">{config.text}</span>
+			<span className={`w-16 font-bold ${config.textClass}`}>{config.text}</span>
 			<span>{timestamp}</span>
 		</div>
 	);
