@@ -230,6 +230,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.6.1** - Fixed VLAN port parsing to store events separately (VLAN events only in VLAN group, base port events only in base group)
 - **v3.6.0** - Added VPN interface alarm ID `0x09110000`, support for VLAN port format (A/B/C.NUMBER), sorted ports display
 - **v3.5.7** - Added alarm ID `0x0813007c` to DOWN state detection
 - **v3.5.6** - Improved port events scrollbar with stable gutter to prevent layout shift
