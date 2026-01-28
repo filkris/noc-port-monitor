@@ -1,5 +1,33 @@
 import { INTERFACE_STATE_PATTERNS, LOG_PATTERNS, EMPTY_OUTPUT } from "@/constants/patterns";
 
+function parsePortKey(port) {
+	const [base, vlan] = port.split(".");
+	const [slot, card, portNum] = base.split("/").map(Number);
+	return { slot, card, portNum, vlan: vlan ? Number(vlan) : null };
+}
+
+function comparePortKeys(a, b) {
+	const portA = parsePortKey(a);
+	const portB = parsePortKey(b);
+
+	const aHasVlan = portA.vlan !== null;
+	const bHasVlan = portB.vlan !== null;
+
+	if (aHasVlan !== bHasVlan) {
+		return aHasVlan ? 1 : -1;
+	}
+
+	if (portA.slot !== portB.slot) return portA.slot - portB.slot;
+	if (portA.card !== portB.card) return portA.card - portB.card;
+	if (portA.portNum !== portB.portNum) return portA.portNum - portB.portNum;
+
+	if (aHasVlan && bHasVlan) {
+		return portA.vlan - portB.vlan;
+	}
+
+	return 0;
+}
+
 function extractLogLines(output) {
 	return output
 		.replace(LOG_PATTERNS.BR_TAG, "\n")
@@ -82,12 +110,19 @@ export function parseRouterLogs(data, router) {
 		return latestState === "DOWN" || latestState === "FAILURE";
 	});
 
+	const sortedPorts = Object.keys(ports)
+		.sort(comparePortKeys)
+		.reduce((acc, key) => {
+			acc[key] = ports[key];
+			return acc;
+		}, {});
+
 	return {
 		routerId: router.id,
 		routerName: router.name,
-		ports,
+		ports: sortedPorts,
 		totalEvents,
-		affectedPorts: Object.keys(ports).length,
+		affectedPorts: Object.keys(sortedPorts).length,
 		hasIssues,
 		lastUpdated: Date.now(),
 	};
