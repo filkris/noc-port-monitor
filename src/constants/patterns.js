@@ -5,7 +5,8 @@ export const INTERFACE_STATE_PATTERNS = Object.freeze({
 });
 
 export const LOG_PATTERNS = Object.freeze({
-	PORT: /(\d+\/\d+\/\d+(?:\.\d+)?)\s*$/,
+	PORT_VLAN: /(\d+\/\d+\/\d+\.\d+)\s*$/,
+	PORT: /(\d+\/\d+\/\d+)\s*$/,
 	DATE: /^(\w{3}\s+\d{1,2}\s+\d{4}\s+\d{1,2}:\d{2})/,
 	BR_TAG: /<br\s*\/?>/gi,
 	HTML_TAG: /<[^>]+>/g,

@@ -52,7 +52,7 @@ function parseLogLine(line) {
 		state = hasClearType ? "RESUME" : "FAILURE";
 	}
 
-	const portMatch = line.match(LOG_PATTERNS.PORT);
+	const portMatch = line.match(LOG_PATTERNS.PORT_VLAN) || line.match(LOG_PATTERNS.PORT);
 	const port = portMatch ? portMatch[1] : null;
 
 	if (!port) return null;
