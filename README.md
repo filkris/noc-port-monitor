@@ -226,6 +226,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.5.7** - Added alarm ID `0x0813007c` to DOWN state detection
 - **v3.5.6** - Improved port events scrollbar with stable gutter to prevent layout shift
 - **v3.5.5** - Adjusted RESUME colors to darker blue shades
 - **v3.5.4** - Added scrollable port events when exceeding configurable limit (default: 15)
