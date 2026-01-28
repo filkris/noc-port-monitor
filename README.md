@@ -158,12 +158,16 @@ Log events are parsed using specific alarm IDs:
 
 | State | Alarm IDs | Condition |
 |-------|-----------|-----------|
-| DOWN | `0x0813005b`, `0x081300a8`, `0x80fa0003` | No clearType |
-| UP | `0x0813005b`, `0x081300a8`, `0x80fa0003` | `clearType=service_resume` |
+| DOWN | `0x0813005b`, `0x081300a8`, `0x0813007c`, `0x09110000` | No clearType |
+| UP | `0x0813005b`, `0x081300a8`, `0x0813007c`, `0x09110000` | `clearType=service_resume` |
 | FAILURE | `0x08130059` | No clearType |
 | RESUME | `0x08130059` | `clearType=service_resume` |
 
-Port names are extracted and formatted as "Port #X/Y/Z".
+Port names are extracted in two formats:
+- **A/B/C** - Standard port format (e.g., `3/1/3`)
+- **A/B/C.NUMBER** - Port with VLAN (e.g., `3/1/3.2751`)
+
+Ports are sorted with standard ports (A/B/C) displayed first, followed by VLAN ports (A/B/C.NUMBER).
 
 ## Storage Schema
 
@@ -226,6 +230,7 @@ Three-step wizard process for fetching router logs:
 | `host_permissions` | API access to nocportal.telekom.rs |
 
 ## Version History
+- **v3.6.0** - Added VPN interface alarm ID `0x09110000`, support for VLAN port format (A/B/C.NUMBER), sorted ports display
 - **v3.5.7** - Added alarm ID `0x0813007c` to DOWN state detection
 - **v3.5.6** - Improved port events scrollbar with stable gutter to prevent layout shift
 - **v3.5.5** - Adjusted RESUME colors to darker blue shades
