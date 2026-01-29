@@ -1,14 +1,14 @@
-import { URL_BASE, UID, LOCALE, COMPANY_IDS } from "@/app/config";
+import { URL_BASE, UID, URL_LOCALE, COMPANY_ID } from "@/app/config";
 import { API_ENDPOINTS } from "@/constants/api";
 
 const generateRequestId = () => Math.floor(Math.random() * 1000000000);
 
-const buildContext = (router) => ({
+const buildContext = router => ({
 	bin_size: true,
-	lang: LOCALE.LANG,
-	tz: LOCALE.TZ,
+	lang: URL_LOCALE.LANG,
+	tz: URL_LOCALE.TZ,
 	uid: UID,
-	allowed_company_ids: [...COMPANY_IDS],
+	allowed_company_ids: [COMPANY_ID],
 	full_width: true,
 	default_mts_router_switch_id: parseInt(router.id, 10),
 	default_mts_router_switch_name: router.name,
@@ -67,10 +67,10 @@ export async function fetchRouterLogs(router, sessionId) {
 			method: "action_log",
 			kwargs: {
 				context: {
-					lang: LOCALE.LANG,
-					tz: LOCALE.TZ,
+					lang: URL_LOCALE.LANG,
+					tz: URL_LOCALE.TZ,
 					uid: UID,
-					allowed_company_ids: [...COMPANY_IDS],
+					allowed_company_ids: [COMPANY_ID],
 					full_width: true,
 					active_model: "mts.router.switch.command.wizard",
 					active_id: wizardId,
@@ -97,4 +97,24 @@ export async function fetchRouterLogs(router, sessionId) {
 	};
 
 	return apiCall(API_ENDPOINTS.READ_WIZARD, readPayload, sessionId);
+}
+
+export async function fetchDebugRouterLogs(router) {
+	const logUrl = chrome.runtime.getURL(`logs/${router.name}.log`);
+
+	try {
+		const response = await fetch(logUrl);
+
+		if (!response.ok) {
+			return { result: [{ output: "" }] };
+		}
+
+		const logContent = await response.text();
+
+		return {
+			result: [{ output: logContent }],
+		};
+	} catch {
+		return { result: [{ output: "" }] };
+	}
 }

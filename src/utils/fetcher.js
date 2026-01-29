@@ -1,8 +1,9 @@
-import { fetchRouterLogs } from "./api";
+import { fetchRouterLogs, fetchDebugRouterLogs } from "./api";
 import { parseRouterLogs } from "./parser";
 import { ROUTERS } from "@/constants/routers";
 import { STORAGE_KEYS } from "@/constants/storage";
 import { tryGetSessionFromCookies } from "./storage";
+import { DEBUG_MODE } from "@/app/config";
 
 async function getSessionId() {
 	let { [STORAGE_KEYS.SESSION_ID]: sessionId } = await chrome.storage.local.get(STORAGE_KEYS.SESSION_ID);
@@ -47,9 +48,9 @@ async function updateRouterData(routerId, result) {
 }
 
 export async function fetchAllRouters() {
-	const sessionId = await getSessionId();
+	const sessionId = DEBUG_MODE ? null : await getSessionId();
 
-	if (!sessionId) {
+	if (!DEBUG_MODE && !sessionId) {
 		return { error: "No session - open NOC Portal first" };
 	}
 
@@ -61,7 +62,7 @@ export async function fetchAllRouters() {
 
 		let result;
 		try {
-			const apiResult = await fetchRouterLogs(router, sessionId);
+			const apiResult = DEBUG_MODE ? await fetchDebugRouterLogs(router) : await fetchRouterLogs(router, sessionId);
 			result = parseRouterLogs(apiResult, router);
 
 			if (oldData?.lastSeenState === "seen" && !hasNewEvents(oldData, result)) {
@@ -88,19 +89,19 @@ export async function fetchAllRouters() {
 }
 
 export async function fetchSingleRouter(routerId) {
-	const sessionId = await getSessionId();
+	const sessionId = DEBUG_MODE ? null : await getSessionId();
 
-	if (!sessionId) {
+	if (!DEBUG_MODE && !sessionId) {
 		return { error: "No session - open NOC Portal first" };
 	}
 
-	const router = ROUTERS.find((r) => r.id === routerId);
+	const router = ROUTERS.find(r => r.id === routerId);
 	if (!router) {
 		return { error: "Router not found" };
 	}
 
 	try {
-		const apiResult = await fetchRouterLogs(router, sessionId);
+		const apiResult = DEBUG_MODE ? await fetchDebugRouterLogs(router) : await fetchRouterLogs(router, sessionId);
 		const result = parseRouterLogs(apiResult, router);
 
 		await updateRouterData(router.id, result);

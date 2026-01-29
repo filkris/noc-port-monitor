@@ -7,6 +7,7 @@ import Main from "./components/Main";
 import Footer from "./components/Footer";
 import { STORAGE_KEYS } from "@/constants/storage";
 import { useChromeStorageMulti } from "@/hooks";
+import { DEBUG_MODE } from "@/app/config";
 
 const STORAGE_CONFIG = [
 	{ key: STORAGE_KEYS.AUTH_STATE, defaultValue: null },
@@ -48,7 +49,7 @@ function App() {
 
 	const isLoggedOut = authState === "logged_out";
 	const hasSession = !!sessionId;
-	const isAuthenticated = hasSession && !isLoggedOut;
+	const isAuthenticated = DEBUG_MODE || (hasSession && !isLoggedOut);
 
 	if (!isAuthenticated) {
 		return (
